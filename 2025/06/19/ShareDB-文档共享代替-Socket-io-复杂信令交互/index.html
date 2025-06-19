@@ -1,0 +1,304 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>ShareDB 文档共享代替 Socket.io 复杂信令交互 | Ali5669</title><meta name="author" content="Ali5669"><meta name="copyright" content="Ali5669"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言Socket.io 实际上有点过于底层了，大量的消息交互都需要人工手写，复用性也不强。 为什么 ShareDB 这种做腾讯文档的能够用来做消息传输呢，其原理和 Socket.io 一样，都是用了 WebSocket 连接来进行双工通信。 我们的需求是建立一个共享区域，多个设备使用同一账号登入，此时协作修改会引发操作冲突。 如果仅使用纯消息传输方式，如 手机-发送修改-&gt;Socket Se">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ShareDB 文档共享代替 Socket.io 复杂信令交互">
+<meta property="og:url" content="https://ali5669.github.io/2025/06/19/ShareDB-%E6%96%87%E6%A1%A3%E5%85%B1%E4%BA%AB%E4%BB%A3%E6%9B%BF-Socket-io-%E5%A4%8D%E6%9D%82%E4%BF%A1%E4%BB%A4%E4%BA%A4%E4%BA%92/index.html">
+<meta property="og:site_name" content="Ali5669">
+<meta property="og:description" content="前言Socket.io 实际上有点过于底层了，大量的消息交互都需要人工手写，复用性也不强。 为什么 ShareDB 这种做腾讯文档的能够用来做消息传输呢，其原理和 Socket.io 一样，都是用了 WebSocket 连接来进行双工通信。 我们的需求是建立一个共享区域，多个设备使用同一账号登入，此时协作修改会引发操作冲突。 如果仅使用纯消息传输方式，如 手机-发送修改-&gt;Socket Se">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ali5669.github.io/images/avatar.gif">
+<meta property="article:published_time" content="2025-06-19T02:20:04.000Z">
+<meta property="article:modified_time" content="2025-06-19T03:03:11.317Z">
+<meta property="article:author" content="Ali5669">
+<meta property="article:tag" content="ShareDB">
+<meta property="article:tag" content="Socket.io">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ali5669.github.io/images/avatar.gif"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://ali5669.github.io/2025/06/19/ShareDB-%E6%96%87%E6%A1%A3%E5%85%B1%E4%BA%AB%E4%BB%A3%E6%9B%BF-Socket-io-%E5%A4%8D%E6%9D%82%E4%BF%A1%E4%BB%A4%E4%BA%A4%E4%BA%92/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ShareDB 文档共享代替 Socket.io 复杂信令交互',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-06-19 11:03:11'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/avatar.gif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ali5669"><span class="site-name">Ali5669</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">ShareDB 文档共享代替 Socket.io 复杂信令交互</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-06-19T02:20:04.000Z" title="发表于 2025-06-19 10:20:04">2025-06-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-06-19T03:03:11.317Z" title="更新于 2025-06-19 11:03:11">2025-06-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/WebSocket/">WebSocket</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span id="" data-flag-title="ShareDB 文档共享代替 Socket.io 复杂信令交互"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="twikoo_visitors"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><code>Socket.io</code> 实际上有点过于底层了，大量的消息交互都需要人工手写，复用性也不强。</p>
+<p>为什么 <code>ShareDB</code> 这种做腾讯文档的能够用来做消息传输呢，其原理和 <code>Socket.io</code> 一样，都是用了 <code>WebSocket</code> 连接来进行双工通信。</p>
+<p>我们的需求是建立一个共享区域，多个设备使用同一账号登入，此时协作修改会引发操作冲突。</p>
+<p>如果仅使用纯消息传输方式，如 <code>手机-发送修改-&gt;Socket Server=广播修改=》其他设备</code>，会产生一些问题：</p>
+<ol>
+<li>如果手机和电脑操作了同一块上下文，使用谁的修改？</li>
+<li>如果多人同时操作了同一块上下文，操作如何合并？</li>
+<li>如果操作之间有冲突，怎么解决冲突？</li>
+</ol>
+<p><code>ShareDB</code> 使用 <code>OT</code> 解决了这一问题，<code>OT</code> 是 <code>Operational transformation</code> 的简称，是一种在高级协作软件系统中支持一系列协作功能的技术。<code>OT</code> 最初是为了在纯文本文档的协作编辑中保持一致性和并发控制而发明的。</p>
+<p>这种保证最终数据一致性和并发控制的协作控制机制能够应用到更广的范围。</p>
+<h1 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h1><p>最初使用 <code>Socket.io</code> 的场景就是 <code>WebRTC</code> 直播服务的流媒体更新通信和房间管理，这些存储在 <code>Socket.io</code> 中的数据完全可以抽象到 <code>ShareDB</code> 中的共享文档中。</p>
+<p>现在需要介绍 <code>ShareDB</code> 中共享文档的两种类型，一种是可持久化的 <code>doc</code>，一种是没人订阅就清空的 <code>state</code>。</p>
+<p>直播场景下，对于媒体流管理和房间管理，应当是没人订阅就删除的 <code>state</code> 模式。</p>
+<p>那么我们就可以初步定义数据类型了：</p>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><h2 id="服务端配置"><a href="#服务端配置" class="headerlink" title="服务端配置"></a>服务端配置</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="attr">defaultConfig</span>: <span class="title class_">SynodeConfig</span> = &#123;</span><br><span class="line">  <span class="attr">server</span>: &#123;</span><br><span class="line">    <span class="attr">port</span>: <span class="built_in">parseInt</span>(process.<span class="property">env</span>.<span class="property">SYNODE_PORT</span> || <span class="string">&quot;8888&quot;</span>),</span><br><span class="line">    <span class="attr">path</span>: process.<span class="property">env</span>.<span class="property">SYNODE_PATH</span> || <span class="string">&quot;/server&quot;</span>,</span><br><span class="line">    <span class="attr">host</span>: process.<span class="property">env</span>.<span class="property">SYNODE_HOST</span> || <span class="string">&quot;localhost&quot;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">collections</span>: &#123;</span><br><span class="line">    <span class="attr">share_live</span>: &#123; <span class="attr">type</span>: <span class="string">&quot;state&quot;</span>, <span class="attr">description</span>: <span class="string">&quot;直播&quot;</span> &#125;, <span class="comment">// 这就是我们定义的共享文档</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">memoryDb</span>: &#123;</span><br><span class="line">    <span class="attr">maxDocsPerCollection</span>: <span class="built_in">parseInt</span>(</span><br><span class="line">      process.<span class="property">env</span>.<span class="property">SYNODE_MAX_DOCS_PER_COLLECTION</span> || <span class="string">&quot;3000&quot;</span></span><br><span class="line">    ),</span><br><span class="line">    <span class="attr">maxOpsPerDoc</span>: <span class="built_in">parseInt</span>(process.<span class="property">env</span>.<span class="property">SYNODE_MAX_OPS_PER_DOC</span> || <span class="string">&quot;200&quot;</span>),</span><br><span class="line">    <span class="attr">cleanupInterval</span>: <span class="built_in">parseInt</span>(process.<span class="property">env</span>.<span class="property">SYNODE_CLEANUP_INTERVAL</span> || <span class="string">&quot;30000&quot;</span>),</span><br><span class="line">    <span class="attr">autoCleanup</span>: process.<span class="property">env</span>.<span class="property">SYNODE_AUTO_CLEANUP</span> !== <span class="string">&quot;false&quot;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">logging</span>: &#123;</span><br><span class="line">    <span class="attr">enableDebug</span>: process.<span class="property">env</span>.<span class="property">SYNODE_DEBUG</span> === <span class="string">&quot;true&quot;</span>,</span><br><span class="line">    <span class="attr">logUserConnections</span>: process.<span class="property">env</span>.<span class="property">SYNODE_LOG_CONNECTIONS</span> !== <span class="string">&quot;false&quot;</span>,</span><br><span class="line">    <span class="attr">logOperations</span>: process.<span class="property">env</span>.<span class="property">SYNODE_LOG_OPERATIONS</span> === <span class="string">&quot;true&quot;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="客户端数据类型定义"><a href="#客户端数据类型定义" class="headerlink" title="客户端数据类型定义"></a>客户端数据类型定义</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> <span class="title class_">LiveSharedData</span> <span class="keyword">extends</span> <span class="title class_">SharedData</span> &#123;</span><br><span class="line">  <span class="attr">streams</span>: &#123; <span class="attr">streamId</span>: <span class="built_in">string</span>; <span class="attr">userId</span>: <span class="built_in">string</span>; <span class="attr">deviceId</span>: <span class="built_in">string</span> &#125;[];</span><br><span class="line">  <span class="attr">connectedUsers</span>: &#123; <span class="attr">userId</span>: <span class="built_in">string</span> &#125;[];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从 shardDB 获取的直播数据</span></span><br><span class="line"><span class="keyword">const</span> sharedLive = useShareData&lt;<span class="title class_">LiveSharedData</span>&gt;(</span><br><span class="line">  <span class="string">&quot;share_live&quot;</span>,</span><br><span class="line">  liveId,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">streams</span>: [],</span><br><span class="line">    <span class="attr">connectedUsers</span>: [],</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123; <span class="attr">otType</span>: <span class="string">&quot;json0&quot;</span>, <span class="attr">localSubmitUpdate</span>: <span class="literal">true</span> &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> useShareData&lt;T <span class="keyword">extends</span> <span class="title class_">SharedData</span>&gt;(</span><br><span class="line">  <span class="attr">collection</span>: <span class="built_in">string</span>,</span><br><span class="line">  <span class="attr">docId</span>: <span class="built_in">string</span>,</span><br><span class="line">  <span class="attr">initData</span>: T,</span><br><span class="line">  options?: <span class="title class_">ShareDataOptions</span></span><br><span class="line">) &#123;</span><br><span class="line">  <span class="comment">/** ShareDB 文档实例 */</span></span><br><span class="line">  <span class="keyword">const</span> doc = shareDB.<span class="property">connection</span>.<span class="title function_">get</span>(collection, docId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="修改文档"><a href="#修改文档" class="headerlink" title="修改文档"></a>修改文档</h2><p>数据定义好了，该修改文档了：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建摄像头流</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">createCameraStream</span> = <span class="keyword">async</span> (<span class="params"><span class="attr">deviceId</span>: <span class="built_in">string</span></span>) =&gt; &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;createCameraStream: &quot;</span>, deviceId);</span><br><span class="line">  <span class="keyword">const</span> streamId = <span class="keyword">await</span> liveMedia.<span class="title function_">createCameraStream</span>(deviceId);</span><br><span class="line">  <span class="keyword">const</span> op = [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">p</span>: [<span class="string">&quot;streams&quot;</span>, sharedLive.<span class="property">data</span>.<span class="property">streams</span>?.<span class="property">length</span> || <span class="number">0</span>],</span><br><span class="line">      <span class="attr">li</span>: &#123;</span><br><span class="line">        <span class="attr">streamId</span>: streamId,</span><br><span class="line">        <span class="attr">userId</span>: user.<span class="property">state</span>.<span class="property">user</span>.<span class="property">id</span>,</span><br><span class="line">        <span class="attr">deviceId</span>: deviceId,</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  ];</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;sharedLive.submitOp: &quot;</span>, op);</span><br><span class="line">  sharedLive.<span class="title function_">submitOp</span>(op, &#123; <span class="attr">source</span>: streamId &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 销毁流</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">destroyStream</span> = <span class="keyword">async</span> (<span class="params"><span class="attr">streamId</span>: <span class="built_in">string</span></span>) =&gt; &#123;</span><br><span class="line">  <span class="comment">// 更新本地流列表</span></span><br><span class="line">  <span class="keyword">const</span> publisher = liveMedia.<span class="property">liveConnections</span>.<span class="property">value</span>.<span class="property">publishers</span>.<span class="title function_">find</span>(</span><br><span class="line">    <span class="function">(<span class="params">p</span>) =&gt;</span> p.<span class="property">streamId</span> === streamId</span><br><span class="line">  );</span><br><span class="line">  <span class="keyword">if</span> (publisher) &#123;</span><br><span class="line">    liveMedia.<span class="title function_">destroyStream</span>(<span class="literal">true</span>, streamId);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 更新 shareDB</span></span><br><span class="line">  <span class="keyword">const</span> index = sharedLive.<span class="property">data</span>.<span class="property">streams</span>.<span class="title function_">findIndex</span>(</span><br><span class="line">    <span class="function">(<span class="params">s</span>) =&gt;</span> s.<span class="property">streamId</span> === streamId</span><br><span class="line">  );</span><br><span class="line">  <span class="keyword">if</span> (index !== -<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> stream = sharedLive.<span class="property">data</span>.<span class="property">streams</span>?.[index];</span><br><span class="line">    <span class="keyword">const</span> op = [&#123; <span class="attr">p</span>: [<span class="string">&quot;streams&quot;</span>, index], <span class="attr">ld</span>: stream &#125;];</span><br><span class="line">    sharedLive.<span class="title function_">submitOp</span>(op, &#123; <span class="attr">source</span>: streamId &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="关于-submitOp"><a href="#关于-submitOp" class="headerlink" title="关于 submitOp"></a>关于 <code>submitOp</code></h2><p>这里的 op 是变更操作，遵循 ShareDB 的 json0 操作协议，有一套自己的语法：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ottypes/json0?tab=readme-ov-file#summary-of-operations">https://github.com/ottypes/json0?tab=readme-ov-file#summary-of-operations</a></p>
+<h2 id="监听变更"><a href="#监听变更" class="headerlink" title="监听变更"></a>监听变更</h2><p>变更的格式也很有意思，就是 <code>submitOp</code> 传入的 <code>op</code>:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;p&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;streams&quot;</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;li&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;streamId&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;userId&quot;</span><span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;deviceId&quot;</span><span class="punctuation">:</span> <span class="number">3</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 监听数据变化</span></span><br><span class="line">sharedLive.<span class="property">events</span>.<span class="title function_">on</span>(<span class="string">&quot;change&quot;</span>, <span class="function">(<span class="params"><span class="attr">delta</span>: <span class="built_in">any</span>, <span class="attr">source</span>: <span class="built_in">any</span></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;数据变化&quot;</span>, delta, source);</span><br><span class="line">  <span class="keyword">if</span> (delta[<span class="number">0</span>].<span class="property">p</span>[<span class="number">0</span>] === <span class="string">&quot;streams&quot;</span> &amp;&amp; !source) &#123;</span><br><span class="line">    <span class="comment">// 是其他人修改的流数据</span></span><br><span class="line">    <span class="keyword">if</span> (delta[<span class="number">0</span>].<span class="property">li</span>) &#123;</span><br><span class="line">      <span class="comment">// 新增流</span></span><br><span class="line">      <span class="keyword">const</span> newStream = delta[<span class="number">0</span>].<span class="property">li</span>[<span class="string">&quot;streamId&quot;</span>];</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;newStream: &quot;</span>, newStream);</span><br><span class="line">      liveMedia.<span class="title function_">addPlayer</span>(newStream, &#123;</span><br><span class="line">        <span class="attr">host</span>: <span class="variable constant_">URL_CONF</span>.<span class="property">host</span>,</span><br><span class="line">        <span class="attr">room</span>: <span class="variable constant_">URL_CONF</span>.<span class="property">room</span>,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (delta[<span class="number">0</span>].<span class="property">ld</span>) &#123;</span><br><span class="line">      <span class="comment">// 删除流</span></span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;删除流: &quot;</span>, delta[<span class="number">0</span>].<span class="property">ld</span>[<span class="string">&quot;streamId&quot;</span>]);</span><br><span class="line">      liveMedia.<span class="title function_">removePlayer</span>(delta[<span class="number">0</span>].<span class="property">ld</span>[<span class="string">&quot;streamId&quot;</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h1 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h1><p><code>ShareDB</code> 还支持多种操作格式，如 <code>rich-text</code>:</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Insert a bolded &quot;Text&quot;</span></span><br><span class="line">&#123; <span class="attr">insert</span>: <span class="string">&quot;Text&quot;</span>, <span class="attr">attributes</span>: &#123; <span class="attr">bold</span>: <span class="literal">true</span> &#125; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Insert a link</span></span><br><span class="line">&#123; <span class="attr">insert</span>: <span class="string">&quot;Google&quot;</span>, <span class="attr">attributes</span>: &#123; <span class="attr">href</span>: <span class="string">&#x27;https://www.google.com&#x27;</span> &#125; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Insert an embed</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">insert</span>: &#123; <span class="attr">image</span>: <span class="string">&#x27;https://octodex.github.com/images/labtocat.png&#x27;</span> &#125;,</span><br><span class="line">  <span class="attr">attributes</span>: &#123; <span class="attr">alt</span>: <span class="string">&quot;Lab Octocat&quot;</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Insert another embed</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">insert</span>: &#123; <span class="attr">video</span>: <span class="string">&#x27;https://www.youtube.com/watch?v=dMH0bHeiRNg&#x27;</span> &#125;,</span><br><span class="line">  <span class="attr">attributes</span>: &#123;</span><br><span class="line">    <span class="attr">width</span>: <span class="number">420</span>,</span><br><span class="line">    <span class="attr">height</span>: <span class="number">315</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>想要使用这种格式，需要到服务端中注册：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> richText = <span class="built_in">require</span>(<span class="string">&quot;rich-text&quot;</span>);</span><br><span class="line"><span class="title class_">ShareDB</span>.<span class="property">types</span>.<span class="title function_">register</span>(richText.<span class="property">type</span>);</span><br></pre></td></tr></table></figure>
+<p>这里有官方的更多操作格式：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ottypes/docs">https://github.com/ottypes/docs</a></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>与其说 <code>ShareDB</code> 可用的范围很多，不如说 <code>OT</code> 协同操作给予了消息管理更多的可能性。对于这种存在冲突与并发的场景，消息队列固然是好东西，但对于如果还需共享、操作上下文，还是需要协同操作解决冲突。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ali5669.github.io">Ali5669</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ali5669.github.io/2025/06/19/ShareDB-%E6%96%87%E6%A1%A3%E5%85%B1%E4%BA%AB%E4%BB%A3%E6%9B%BF-Socket-io-%E5%A4%8D%E6%9D%82%E4%BF%A1%E4%BB%A4%E4%BA%A4%E4%BA%92/">https://ali5669.github.io/2025/06/19/ShareDB-%E6%96%87%E6%A1%A3%E5%85%B1%E4%BA%AB%E4%BB%A3%E6%9B%BF-Socket-io-%E5%A4%8D%E6%9D%82%E4%BF%A1%E4%BB%A4%E4%BA%A4%E4%BA%92/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://ali5669.github.io" target="_blank">Ali5669</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ShareDB/">ShareDB</a><a class="post-meta__tags" href="/tags/Socket-io/">Socket.io</a></div><div class="post_share"><div class="social-share" data-image="/images/avatar.gif" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/06/19/LC-day-07-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/" title="LC day-07 字符串匹配"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">LC day-07 字符串匹配</div></div></a></div><div class="next-post pull-right"><a href="/2025/06/09/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%88%9D%E6%8E%A2/" title="微服务初探"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">微服务初探</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/avatar.gif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Ali5669</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ali5669"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">爱你</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.</span> <span class="toc-text">设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.</span> <span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%85%8D%E7%BD%AE"><span class="toc-number">3.1.</span> <span class="toc-text">服务端配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%AE%9A%E4%B9%89"><span class="toc-number">3.2.</span> <span class="toc-text">客户端数据类型定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%96%87%E6%A1%A3"><span class="toc-number">3.3.</span> <span class="toc-text">修改文档</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-submitOp"><span class="toc-number">3.4.</span> <span class="toc-text">关于 submitOp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%91%E5%90%AC%E5%8F%98%E6%9B%B4"><span class="toc-number">3.5.</span> <span class="toc-text">监听变更</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8B%93%E5%B1%95"><span class="toc-number">4.</span> <span class="toc-text">拓展</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/06/19/LC-day-07-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/" title="LC day-07 字符串匹配">LC day-07 字符串匹配</a><time datetime="2025-06-19T07:13:16.000Z" title="发表于 2025-06-19 15:13:16">2025-06-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/06/19/ShareDB-%E6%96%87%E6%A1%A3%E5%85%B1%E4%BA%AB%E4%BB%A3%E6%9B%BF-Socket-io-%E5%A4%8D%E6%9D%82%E4%BF%A1%E4%BB%A4%E4%BA%A4%E4%BA%92/" title="ShareDB 文档共享代替 Socket.io 复杂信令交互">ShareDB 文档共享代替 Socket.io 复杂信令交互</a><time datetime="2025-06-19T02:20:04.000Z" title="发表于 2025-06-19 10:20:04">2025-06-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/06/09/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%88%9D%E6%8E%A2/" title="微服务初探">微服务初探</a><time datetime="2025-06-09T01:32:38.000Z" title="发表于 2025-06-09 09:32:38">2025-06-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/05/15/webRTC-%E5%BC%80%E5%8F%91%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/" title="webRTC 开发工作总结">webRTC 开发工作总结</a><time datetime="2025-05-15T05:55:40.000Z" title="发表于 2025-05-15 13:55:40">2025-05-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/24/%E5%9C%A8%E9%98%B2%E7%81%AB%E5%A2%99%E9%98%BB%E6%8C%A1UDP%E5%8C%85%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E9%83%A8%E7%BD%B2SRS/" title="在防火墙阻挡UDP包的情况下部署SRS">在防火墙阻挡UDP包的情况下部署SRS</a><time datetime="2025-04-24T05:21:02.000Z" title="发表于 2025-04-24 13:21:02">2025-04-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By Ali5669</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://illustrious-lily-7059de.netlify.app/.netlify/functions/twikoo',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://illustrious-lily-7059de.netlify.app/.netlify/functions/twikoo',
+      region: '',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(init,0)
+    else getScript('https://cdn.jsdelivr.net/npm/twikoo@1.6.31/dist/twikoo.all.min.js').then(init)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
