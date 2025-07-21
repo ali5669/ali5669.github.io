@@ -1,0 +1,347 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>面试模拟-Redis | Ali5669</title><meta name="author" content="Ali5669"><meta name="copyright" content="Ali5669"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言感觉自己实习期间的工作没有很好地和现在大厂的技术栈结合起来 所以让 DeepSeek 融合了一个黑马点评进去 针对这份简历，同时让它问了几个面试问题，比较有深度，记录下来 内容面试官： 很好，你提到项目中大量使用了 Redis 进行优化。我们深入聊聊 Redis 这块： Session 管理优化Q1.你具体是如何设计 Redis 存储 Session 的？ 为什么选择这种数据结构（比如 Str">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试模拟-Redis">
+<meta property="og:url" content="https://ali5669.github.io/2025/07/21/%E9%9D%A2%E8%AF%95%E6%A8%A1%E6%8B%9F-Redis/index.html">
+<meta property="og:site_name" content="Ali5669">
+<meta property="og:description" content="前言感觉自己实习期间的工作没有很好地和现在大厂的技术栈结合起来 所以让 DeepSeek 融合了一个黑马点评进去 针对这份简历，同时让它问了几个面试问题，比较有深度，记录下来 内容面试官： 很好，你提到项目中大量使用了 Redis 进行优化。我们深入聊聊 Redis 这块： Session 管理优化Q1.你具体是如何设计 Redis 存储 Session 的？ 为什么选择这种数据结构（比如 Str">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ali5669.github.io/images/avatar.gif">
+<meta property="article:published_time" content="2025-07-21T02:35:16.000Z">
+<meta property="article:modified_time" content="2025-07-21T05:48:49.748Z">
+<meta property="article:author" content="Ali5669">
+<meta property="article:tag" content="Redis">
+<meta property="article:tag" content="Session">
+<meta property="article:tag" content="Https">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ali5669.github.io/images/avatar.gif"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://ali5669.github.io/2025/07/21/%E9%9D%A2%E8%AF%95%E6%A8%A1%E6%8B%9F-Redis/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '面试模拟-Redis',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-07-21 13:48:49'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/avatar.gif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">46</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ali5669"><span class="site-name">Ali5669</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">面试模拟-Redis</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-07-21T02:35:16.000Z" title="发表于 2025-07-21 10:35:16">2025-07-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-07-21T05:48:49.748Z" title="更新于 2025-07-21 13:48:49">2025-07-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span id="" data-flag-title="面试模拟-Redis"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="twikoo_visitors"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>感觉自己实习期间的工作没有很好地和现在大厂的技术栈结合起来</p>
+<p>所以让 DeepSeek 融合了一个黑马点评进去</p>
+<p>针对这份简历，同时让它问了几个面试问题，比较有深度，记录下来</p>
+<h1 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h1><p>面试官： 很好，你提到项目中大量使用了 <code>Redis</code> 进行优化。我们深入聊聊 <code>Redis</code> 这块：</p>
+<h2 id="Session-管理优化"><a href="#Session-管理优化" class="headerlink" title="Session 管理优化"></a>Session 管理优化</h2><p>Q1.你具体是如何设计 <code>Redis</code> 存储 <code>Session</code> 的？ 为什么选择这种数据结构（比如 String vs Hash）？</p>
+<p>我在项目中主要是使用的 <code>Hash</code> 结构，如: <code>(userId, userName, role, createdTime, lastAccessedTime, currentDecice...)</code></p>
+<ul>
+<li><p>因为我们的项目中有需要频繁增删这种无需持久化的数据。对于我们的 SessionKey 命名，是 session:{sessionId}，这里的 sessionId 是用 UUid 生成的随机 32 位 ID。对于过期时间，我们设置的是 3600 秒，也就是 1 小时；每次更新我们首先会去更新 lastAccessedTime，然后重新 Expire 一下，也是 3600 秒。</p>
+</li>
+<li><p>对于 <code>Hash</code> 结构，它可以用 <code>HINCRBY(修改数字) HSET(修改字段)</code> 等命令来源地修改单个字段，而无需读取整个对象。</p>
+</li>
+<li><p>而 <code>String</code> 结构我们还需要首先读取整个对象，然后反序列化，修改，再序列化，最后写回这一系列操作。</p>
+</li>
+<li><p>采用 <code>Hash</code> 结构而非 <code>String</code> 结构能够大大地减少网络传输量和服务器负载</p>
+</li>
+</ul>
+<p>Q2.需要考虑哪些<code>安全性</code>或<code>过期</code>问题？</p>
+<ul>
+<li><p>我分成<code>过期策略</code>和<code>安全策略</code>两方面回答：</p>
+<ul>
+<li><p>对于过期策略：在常见的过期场景下有一些问题，比如用户故意保持活跃，或者登陆后使用 <code>Session</code> 固定攻击。</p>
+<ul>
+<li>那么对于永不过期的活跃用户，我们应设置<code>绝对过期时间：</code>即通过 <code>createTime</code> 和当前时间进行比对，如果超过 3 天就要求重新登录。</li>
+<li>对于一些敏感操作，我们应当要求重新登录，如修改密码，也就是<code>定期安全验证</code>。</li>
+<li>与此同时也要监控 <code>Session</code> ，定期扫描存活时间，超过阈值则清理。</li>
+</ul>
+<p>通过这些手段能够有效控制 <code>SessionId</code> 不轮换导致的固定攻击。</p>
+</li>
+</ul>
+<hr>
+<ul>
+<li>对于安全策略：分为 SessionId 的安全和 Session 存储的数据安全<ol>
+<li>对于 SessionId 的安全：<ul>
+<li>首先要强制开启 <code>Https 防止 SessionId 被劫持</code>；</li>
+<li>其次对于 <code>Cookie</code> 我们应该做如下配置:<ul>
+<li><code>Httponly</code>：防止 JS 用 document.cookit 访问 cookie；</li>
+<li><code>Secure</code>：仅在 Https 连接时发送 Cookie；<code>SameSite=Strict/Lax</code>：提供 <code>CSRF 防护</code>，Strict 最安全，但可能影响跨站跳转的用户体验；Lax 则是较好的平衡。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>对于 Session 数据安全性：<ul>
+<li>首先<code>一定不能存储非常敏感的信息</code>，比如卡号、密码等</li>
+<li>对于 userId、role 等敏感信息需要分两方面考虑<ul>
+<li>设置网络隔离：redis 部署在内网，只能够内网访问到它，不开放公网接口</li>
+<li>设置访问控制：<ul>
+<li>设置强密码即设置 <code>requirePass</code>，阻止任意客户端都能连接 <code>Redis</code> 的情况，访问需要携带 <code>Auth password</code></li>
+<li>设置 <code>IP 白名单</code>，在防火墙、安全组配置可访问 Redis 端口的源 IP 地址，最好 redis 默认端口也要更换</li>
+<li>Redis 6+ 引入了 <code>ACL</code>，它可以为不同的应用或服务创建独立用户，用户的命令权限、访问权限、读写权限都可以更加细粒度的控制。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="热点数据缓存"><a href="#热点数据缓存" class="headerlink" title="热点数据缓存"></a>热点数据缓存</h2><p>你缓存了学习资源元数据和用户状态。</p>
+<p>Q1. 当这些数据在后台被更新时（比如老师修改了资源信息），如何保证缓存与数据库的一致性？</p>
+<p>Q2. 你采用了什么策略？（旁路缓存？读写穿透？）</p>
+<p>A.</p>
+<h2 id="布隆过滤器"><a href="#布隆过滤器" class="headerlink" title="布隆过滤器"></a>布隆过滤器</h2><p>你提到用 Guava 的布隆过滤器缓解缓存穿透。</p>
+<p>Q1. 布隆过滤器的原理是什么？它的优缺点是什么？（尤其要关注误判率和不可删除）</p>
+<p>Q2. 在你的场景里，缓存穿透具体是指什么请求导致的？键是如何构造的？</p>
+<p>Q3. 为什么选择 Guava 的本地布隆过滤器而不是 Redis 自带的 BF 模块？是如何集成到缓存流程中的？</p>
+<p>A1.</p>
+<h2 id="实时状态同步"><a href="#实时状态同步" class="headerlink" title="实时状态同步"></a>实时状态同步</h2><p>Q1. 你使用了 Redis 的哪些数据结构和特性来实现？</p>
+<p>Q2. Pub/Sub 在这里扮演什么角色？</p>
+<p>Q3. 如何保证大量状态更新时的性能和可靠性？</p>
+<p>Q4. 是否遇到消息积压问题？</p>
+<p>A.</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ali5669.github.io">Ali5669</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ali5669.github.io/2025/07/21/%E9%9D%A2%E8%AF%95%E6%A8%A1%E6%8B%9F-Redis/">https://ali5669.github.io/2025/07/21/%E9%9D%A2%E8%AF%95%E6%A8%A1%E6%8B%9F-Redis/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://ali5669.github.io" target="_blank">Ali5669</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Redis/">Redis</a><a class="post-meta__tags" href="/tags/Session/">Session</a><a class="post-meta__tags" href="/tags/Https/">Https</a></div><div class="post_share"><div class="social-share" data-image="/images/avatar.gif" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2025/07/14/%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C-%E5%B0%8F%E9%B9%8F%E6%8A%80%E6%9C%AF%E9%9D%A2/" title="面试经验-小鹏技术面"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">面试经验-小鹏技术面</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/avatar.gif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Ali5669</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">46</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ali5669"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">爱你</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AE%B9"><span class="toc-number">2.</span> <span class="toc-text">内容</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Session-%E7%AE%A1%E7%90%86%E4%BC%98%E5%8C%96"><span class="toc-number">2.1.</span> <span class="toc-text">Session 管理优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%83%AD%E7%82%B9%E6%95%B0%E6%8D%AE%E7%BC%93%E5%AD%98"><span class="toc-number">2.2.</span> <span class="toc-text">热点数据缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">2.3.</span> <span class="toc-text">布隆过滤器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%97%B6%E7%8A%B6%E6%80%81%E5%90%8C%E6%AD%A5"><span class="toc-number">2.4.</span> <span class="toc-text">实时状态同步</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/21/%E9%9D%A2%E8%AF%95%E6%A8%A1%E6%8B%9F-Redis/" title="面试模拟-Redis">面试模拟-Redis</a><time datetime="2025-07-21T02:35:16.000Z" title="发表于 2025-07-21 10:35:16">2025-07-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/14/%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C-%E5%B0%8F%E9%B9%8F%E6%8A%80%E6%9C%AF%E9%9D%A2/" title="面试经验-小鹏技术面">面试经验-小鹏技术面</a><time datetime="2025-07-14T09:04:28.000Z" title="发表于 2025-07-14 17:04:28">2025-07-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/09/LC-day-15-%E6%9B%B4%E5%BF%AB%E6%9B%B4%E5%A5%BD%E7%9A%84%E5%9B%9E%E6%BA%AF/" title="LC-day-15-更快更好的回溯">LC-day-15-更快更好的回溯</a><time datetime="2025-07-09T06:12:11.000Z" title="发表于 2025-07-09 14:12:11">2025-07-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/08/LC-day-14-%E5%9B%9E%E6%BA%AF%E4%B8%8E%E5%89%AA%E6%9E%9D/" title="LC-day-14-回溯与剪枝">LC-day-14-回溯与剪枝</a><time datetime="2025-07-08T02:06:39.000Z" title="发表于 2025-07-08 10:06:39">2025-07-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/02/%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C-%E4%B8%8A%E6%B1%BD%E6%95%B0%E5%AD%97%E5%8C%96%E4%BA%A7%E5%93%81%E4%BA%A4%E4%BB%98-OC/" title="面试经验-上汽数字化产品交付-OC">面试经验-上汽数字化产品交付-OC</a><time datetime="2025-07-02T03:23:51.000Z" title="发表于 2025-07-02 11:23:51">2025-07-02</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By Ali5669</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://illustrious-lily-7059de.netlify.app/.netlify/functions/twikoo',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://illustrious-lily-7059de.netlify.app/.netlify/functions/twikoo',
+      region: '',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(init,0)
+    else getScript('https://cdn.jsdelivr.net/npm/twikoo@1.6.31/dist/twikoo.all.min.js').then(init)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
