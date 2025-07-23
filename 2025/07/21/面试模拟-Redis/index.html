@@ -7,7 +7,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ali5669.github.io/images/avatar.gif">
 <meta property="article:published_time" content="2025-07-21T02:35:16.000Z">
-<meta property="article:modified_time" content="2025-07-21T05:48:49.748Z">
+<meta property="article:modified_time" content="2025-07-21T07:51:41.285Z">
 <meta property="article:author" content="Ali5669">
 <meta property="article:tag" content="Redis">
 <meta property="article:tag" content="Session">
@@ -58,7 +58,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2025-07-21 13:48:49'
+  postUpdate: '2025-07-21 15:51:41'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -159,12 +159,12 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/avatar.gif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">46</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ali5669"><span class="site-name">Ali5669</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">面试模拟-Redis</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-07-21T02:35:16.000Z" title="发表于 2025-07-21 10:35:16">2025-07-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-07-21T05:48:49.748Z" title="更新于 2025-07-21 13:48:49">2025-07-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span id="" data-flag-title="面试模拟-Redis"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="twikoo_visitors"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>感觉自己实习期间的工作没有很好地和现在大厂的技术栈结合起来</p>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/avatar.gif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">46</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ali5669"><span class="site-name">Ali5669</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">面试模拟-Redis</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-07-21T02:35:16.000Z" title="发表于 2025-07-21 10:35:16">2025-07-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-07-21T07:51:41.285Z" title="更新于 2025-07-21 15:51:41">2025-07-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span id="" data-flag-title="面试模拟-Redis"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="twikoo_visitors"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>感觉自己实习期间的工作没有很好地和现在大厂的技术栈结合起来</p>
 <p>所以让 DeepSeek 融合了一个黑马点评进去</p>
 <p>针对这份简历，同时让它问了几个面试问题，比较有深度，记录下来</p>
 <h1 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h1><p>面试官： 很好，你提到项目中大量使用了 <code>Redis</code> 进行优化。我们深入聊聊 <code>Redis</code> 这块：</p>
 <h2 id="Session-管理优化"><a href="#Session-管理优化" class="headerlink" title="Session 管理优化"></a>Session 管理优化</h2><p>Q1.你具体是如何设计 <code>Redis</code> 存储 <code>Session</code> 的？ 为什么选择这种数据结构（比如 String vs Hash）？</p>
-<p>我在项目中主要是使用的 <code>Hash</code> 结构，如: <code>(userId, userName, role, createdTime, lastAccessedTime, currentDecice...)</code></p>
+<p>A1. 我在项目中主要是使用的 <code>Hash</code> 结构，如: <code>(userId, userName, role, createdTime, lastAccessedTime, currentDecice...)</code></p>
 <ul>
 <li><p>因为我们的项目中有需要频繁增删这种无需持久化的数据。对于我们的 SessionKey 命名，是 session:{sessionId}，这里的 sessionId 是用 UUid 生成的随机 32 位 ID。对于过期时间，我们设置的是 3600 秒，也就是 1 小时；每次更新我们首先会去更新 lastAccessedTime，然后重新 Expire 一下，也是 3600 秒。</p>
 </li>
@@ -175,9 +175,9 @@
 <li><p>采用 <code>Hash</code> 结构而非 <code>String</code> 结构能够大大地减少网络传输量和服务器负载</p>
 </li>
 </ul>
+<hr>
 <p>Q2.需要考虑哪些<code>安全性</code>或<code>过期</code>问题？</p>
-<ul>
-<li><p>我分成<code>过期策略</code>和<code>安全策略</code>两方面回答：</p>
+<p>A2. 我分成<code>过期策略</code>和<code>安全策略</code>两方面回答：</p>
 <ul>
 <li><p>对于过期策略：在常见的过期场景下有一些问题，比如用户故意保持活跃，或者登陆后使用 <code>Session</code> 固定攻击。</p>
 <ul>
@@ -195,7 +195,8 @@
 <li>首先要强制开启 <code>Https 防止 SessionId 被劫持</code>；</li>
 <li>其次对于 <code>Cookie</code> 我们应该做如下配置:<ul>
 <li><code>Httponly</code>：防止 JS 用 document.cookit 访问 cookie；</li>
-<li><code>Secure</code>：仅在 Https 连接时发送 Cookie；<code>SameSite=Strict/Lax</code>：提供 <code>CSRF 防护</code>，Strict 最安全，但可能影响跨站跳转的用户体验；Lax 则是较好的平衡。</li>
+<li><code>Secure</code>：仅在 Https 连接时发送 Cookie；</li>
+<li><code>SameSite=Strict/Lax</code>：提供 <code>CSRF 防护</code>，Strict 最安全，但可能影响跨站跳转的用户体验；Lax 则是较好的平衡。</li>
 </ul>
 </li>
 </ul>
@@ -217,15 +218,52 @@
 </ol>
 </li>
 </ul>
-</li>
-</ul>
 <h2 id="热点数据缓存"><a href="#热点数据缓存" class="headerlink" title="热点数据缓存"></a>热点数据缓存</h2><p>你缓存了学习资源元数据和用户状态。</p>
-<p>Q1. 当这些数据在后台被更新时（比如老师修改了资源信息），如何保证缓存与数据库的一致性？</p>
-<p>Q2. 你采用了什么策略？（旁路缓存？读写穿透？）</p>
-<p>A.</p>
+<p>Q1. 当这些数据在后台被更新时（比如老师修改了资源信息），如何保证缓存与数据库的一致性？ 你采用了什么策略？（旁路缓存？读写穿透？）</p>
+<p>A1. 我们使用的是<code>旁路缓存</code>策略来保证缓存与数据库一致性：</p>
+<ul>
+<li>在读数据时，cache 命中就返回，未命中就从 db 中读取返回，随后将数据写入 cache 中</li>
+<li>在写数据时先更新 db，再删除 cache</li>
+</ul>
+<hr>
+<p>于此同时，我们使用 <code>RocketMQ</code> 来存储 DB 更新成功后，异步提交的删除 Cache 操作消息，由独立的消费者监听并执行删除 Cache 操作，于此同时保障消息幂等性，以此应对删除 Cache 可能失败的情况。</p>
+<p>Q2. 为什么是 “更新 DB + 删除 Cache” 而不是 “更新 DB + 更新 Cache”？</p>
+<p>A2. 如果有两个请求都需要更新同一片数据，如果不施加分布式锁，可能出现更新顺序出错的问题。</p>
+<ul>
+<li>对于 先更新 db，再删除 cache 这种方法，首先是简单，其次是能够保障最终一致性</li>
+<li>当然它牺牲了读数据的性能，因为直接删除 Cache 会造成 Cache miss，增加了 db 的负担。</li>
+</ul>
+<hr>
+<p>Q3. 如何应对 “先删 Cache，后更新 DB” 的失效问题？</p>
+<p>A3. 一般使用延迟双删的解决方案，即删除缓存，然后修改数据库，然后延时一段时间（500ms）再删缓存。</p>
+<hr>
+<p>Q4. <code>Write DB -&gt; Delete Cache</code> 就万无一失吗？</p>
+<p>A5. 当然不是，读写并发时可能出现读数据在 Cache miss 情况下获取数据后阻塞，写数据完成 db 更新后，读数据重建 Cache 导致不一致的问题。</p>
+<hr>
+<p>Q5. 删除 Cache 失败怎么办？ 如何保证删除操作最终成功？在你们的系统中，谁负责执行 “更新 DB 后删除 Cache” 的操作？应用服务在同一个事务/线程里同步执行吗？有什么风险？更好的做法？</p>
+<p>A5. 我们使用 <code>RocketMQ</code> 来存储 DB 更新成功后，异步提交的删除 Cache 操作消息，由独立的消费者监听并执行删除 Cache 操作，于此同时保障消息幂等性，以此应对删除 Cache 可能失败的情况。</p>
+<ul>
+<li>如果放在同一个事务中执行，会增加请求延迟，如果 Cache 响应慢或者失效，会阻塞线程和引发事务回滚。</li>
+</ul>
+<hr>
+<p>Q6. 缓存预热与击穿： 对于极热的热点数据 (如爆款课程元数据)，在 Cache 被删除或失效瞬间，大量请求可能同时穿透到 DB。你们是如何预防的？</p>
+<p>A6. 对于缓存击穿问题，我们采用了互斥锁+逻辑过期+逻辑删除的策略，即通过获取 Redis SETNX 的方式，只允许单个线程重建缓存，其余未能获取到锁的线程则返回过期数据。</p>
+<ul>
+<li>对于逻辑过期，即在 value 中添加一个 expire 字段，在读数据时检查是否过期；</li>
+<li>对于逻辑删除，我们使用了 Set 数据结构，将需要被删除的数据放入 Set 中，读数据的时候检查是否被删除。</li>
+</ul>
 <h2 id="布隆过滤器"><a href="#布隆过滤器" class="headerlink" title="布隆过滤器"></a>布隆过滤器</h2><p>你提到用 Guava 的布隆过滤器缓解缓存穿透。</p>
 <p>Q1. 布隆过滤器的原理是什么？它的优缺点是什么？（尤其要关注误判率和不可删除）</p>
+<p>A1. 布隆过滤器是用来缓解缓存穿透问题的工具，通过使用多个 hash 函数对 id 进行计算，以及使用 bitmap 记录计算值的 01 分布。如果某个 id 通过 hash 计算得到多个值中的某个在 bitmap 中为 0，则这个 id 就不存在。</p>
+<ul>
+<li>布隆过滤器很大的优点就是内存占用较少，仅需维护 bitmap，不像缓存空数据一样需要记录冗余 Key。</li>
+<li>当然布隆过滤器也有缺点：实现起来比较复杂；存在误判问题，在计算 hash 时，不同的 id 也有可能映射到相同的多个 hash 值中。这一点是可控的，即将 bitmap 容量提高，那么误判率就会下降；以及它的不能扩容和不可删除特性，存入了 id 映射后就不能删除，因为其他 id hash 映射也可能与这个 id 重合或部分重合。</li>
+</ul>
+<hr>
 <p>Q2. 在你的场景里，缓存穿透具体是指什么请求导致的？键是如何构造的？</p>
+<p>A2. 一个比较常见的例子是是用户在直播结束之后没有退出，刷新已结束的直播页面、在已结束的直播间中做各种操作等。像这种请求都会携带直播 ID，许多基于该 ID 缓存的状态变量在直播结束后就会从缓存中删除，从而造成了缓存穿透。</p>
+<p>-</p>
+<hr>
 <p>Q3. 为什么选择 Guava 的本地布隆过滤器而不是 Redis 自带的 BF 模块？是如何集成到缓存流程中的？</p>
 <p>A1.</p>
 <h2 id="实时状态同步"><a href="#实时状态同步" class="headerlink" title="实时状态同步"></a>实时状态同步</h2><p>Q1. 你使用了 Redis 的哪些数据结构和特性来实现？</p>
