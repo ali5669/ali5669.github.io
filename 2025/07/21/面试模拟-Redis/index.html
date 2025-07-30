@@ -7,10 +7,11 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ali5669.github.io/images/avatar.gif">
 <meta property="article:published_time" content="2025-07-21T02:35:16.000Z">
-<meta property="article:modified_time" content="2025-07-21T07:51:41.285Z">
+<meta property="article:modified_time" content="2025-07-30T00:52:12.789Z">
 <meta property="article:author" content="Ali5669">
 <meta property="article:tag" content="Redis">
 <meta property="article:tag" content="Session">
+<meta property="article:tag" content="Pub&#x2F;Sub">
 <meta property="article:tag" content="Https">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ali5669.github.io/images/avatar.gif"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://ali5669.github.io/2025/07/21/%E9%9D%A2%E8%AF%95%E6%A8%A1%E6%8B%9F-Redis/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
@@ -58,7 +59,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2025-07-21 15:51:41'
+  postUpdate: '2025-07-30 08:52:12'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -159,14 +160,14 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/avatar.gif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">48</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ali5669"><span class="site-name">Ali5669</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">面试模拟-Redis</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-07-21T02:35:16.000Z" title="发表于 2025-07-21 10:35:16">2025-07-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-07-21T07:51:41.285Z" title="更新于 2025-07-21 15:51:41">2025-07-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span id="" data-flag-title="面试模拟-Redis"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="twikoo_visitors"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>感觉自己实习期间的工作没有很好地和现在大厂的技术栈结合起来</p>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/avatar.gif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">49</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ali5669"><span class="site-name">Ali5669</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">面试模拟-Redis</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-07-21T02:35:16.000Z" title="发表于 2025-07-21 10:35:16">2025-07-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-07-30T00:52:12.789Z" title="更新于 2025-07-30 08:52:12">2025-07-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span id="" data-flag-title="面试模拟-Redis"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="twikoo_visitors"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>感觉自己实习期间的工作没有很好地和现在大厂的技术栈结合起来</p>
 <p>所以让 DeepSeek 融合了一个黑马点评进去</p>
 <p>针对这份简历，同时让它问了几个面试问题，比较有深度，记录下来</p>
 <h1 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h1><p>面试官： 很好，你提到项目中大量使用了 <code>Redis</code> 进行优化。我们深入聊聊 <code>Redis</code> 这块：</p>
 <h2 id="Session-管理优化"><a href="#Session-管理优化" class="headerlink" title="Session 管理优化"></a>Session 管理优化</h2><p>Q1.你具体是如何设计 <code>Redis</code> 存储 <code>Session</code> 的？ 为什么选择这种数据结构（比如 String vs Hash）？</p>
 <p>A1. 我在项目中主要是使用的 <code>Hash</code> 结构，如: <code>(userId, userName, role, createdTime, lastAccessedTime, currentDecice...)</code></p>
 <ul>
-<li><p>因为我们的项目中有需要频繁增删这种无需持久化的数据。对于我们的 SessionKey 命名，是 session:{sessionId}，这里的 sessionId 是用 UUid 生成的随机 32 位 ID。对于过期时间，我们设置的是 3600 秒，也就是 1 小时；每次更新我们首先会去更新 lastAccessedTime，然后重新 Expire 一下，也是 3600 秒。</p>
+<li><p>因为我们的项目中有需要频繁增删这种无需持久化的数据。对于我们的 SessionKey 命名，是 session:{sessionId}，<strong>这里的 sessionId 是用 UUid 生成的随机 32 位 ID</strong>。对于过期时间，我们设置的是 3600 秒，也就是 1 小时；每次更新我们首先会去更新 lastAccessedTime，然后重新 Expire 一下，也是 3600 秒。</p>
 </li>
 <li><p>对于 <code>Hash</code> 结构，它可以用 <code>HINCRBY(修改数字) HSET(修改字段)</code> 等命令来源地修改单个字段，而无需读取整个对象。</p>
 </li>
@@ -176,23 +177,23 @@
 </li>
 </ul>
 <hr>
-<p>Q2.需要考虑哪些<code>安全性</code>或<code>过期</code>问题？</p>
-<p>A2. 我分成<code>过期策略</code>和<code>安全策略</code>两方面回答：</p>
+<p>Q2.需要考虑哪些<strong>安全性或过期</strong>问题？</p>
+<p>A2. 我分成<strong>过期策略</strong>和<strong>安全策略</strong>两方面回答：</p>
 <ul>
-<li><p>对于过期策略：在常见的过期场景下有一些问题，比如用户故意保持活跃，或者登陆后使用 <code>Session</code> 固定攻击。</p>
+<li><p>对于<strong>过期策略</strong>：在常见的过期场景下有一些问题，比如用户<strong>故意保持活跃</strong>，或者<strong>登陆后使用 <code>Session</code> 固定攻击</strong>。</p>
 <ul>
-<li>那么对于永不过期的活跃用户，我们应设置<code>绝对过期时间：</code>即通过 <code>createTime</code> 和当前时间进行比对，如果超过 3 天就要求重新登录。</li>
-<li>对于一些敏感操作，我们应当要求重新登录，如修改密码，也就是<code>定期安全验证</code>。</li>
+<li>那么对于永不过期的活跃用户，我们应设置<strong>绝对过期时间</strong>：即通过 <code>createTime</code> 和当前时间进行比对，如果超过 3 天就要求重新登录。</li>
+<li>对于一些敏感操作，我们应当要求重新登录，如修改密码，也就是<strong>定期安全验证</strong>。</li>
 <li>与此同时也要监控 <code>Session</code> ，定期扫描存活时间，超过阈值则清理。</li>
 </ul>
-<p>通过这些手段能够有效控制 <code>SessionId</code> 不轮换导致的固定攻击。</p>
+<p>通过这些手段能够有效控制 <strong><code>SessionId</code> 不轮换导致的固定攻击</strong>。</p>
 </li>
 </ul>
 <hr>
 <ul>
 <li>对于安全策略：分为 SessionId 的安全和 Session 存储的数据安全<ol>
-<li>对于 SessionId 的安全：<ul>
-<li>首先要强制开启 <code>Https 防止 SessionId 被劫持</code>；</li>
+<li>对于 <code>SessionId</code> 的安全：<ul>
+<li>首先要<strong>强制开启 Https</strong> 防止 SessionId 被劫持；</li>
 <li>其次对于 <code>Cookie</code> 我们应该做如下配置:<ul>
 <li><code>Httponly</code>：防止 JS 用 document.cookit 访问 cookie；</li>
 <li><code>Secure</code>：仅在 Https 连接时发送 Cookie；</li>
@@ -201,13 +202,13 @@
 </li>
 </ul>
 </li>
-<li>对于 Session 数据安全性：<ul>
-<li>首先<code>一定不能存储非常敏感的信息</code>，比如卡号、密码等</li>
+<li>对于 <code>Session</code> 数据安全性：<ul>
+<li>首先<strong>一定不能存储非常敏感的信息</strong>，比如卡号、密码等</li>
 <li>对于 userId、role 等敏感信息需要分两方面考虑<ul>
-<li>设置网络隔离：redis 部署在内网，只能够内网访问到它，不开放公网接口</li>
-<li>设置访问控制：<ul>
+<li>设置<strong>网络隔离</strong>：redis 部署在内网，只能够内网访问到它，不开放公网接口</li>
+<li>设置<strong>访问控制</strong>：<ul>
 <li>设置强密码即设置 <code>requirePass</code>，阻止任意客户端都能连接 <code>Redis</code> 的情况，访问需要携带 <code>Auth password</code></li>
-<li>设置 <code>IP 白名单</code>，在防火墙、安全组配置可访问 Redis 端口的源 IP 地址，最好 redis 默认端口也要更换</li>
+<li>设置 <strong>IP 白名单</strong>，在防火墙、安全组配置可访问 Redis 端口的源 IP 地址，最好 redis 默认端口也要更换</li>
 <li>Redis 6+ 引入了 <code>ACL</code>，它可以为不同的应用或服务创建独立用户，用户的命令权限、访问权限、读写权限都可以更加细粒度的控制。</li>
 </ul>
 </li>
@@ -220,13 +221,13 @@
 </ul>
 <h2 id="热点数据缓存"><a href="#热点数据缓存" class="headerlink" title="热点数据缓存"></a>热点数据缓存</h2><p>你缓存了学习资源元数据和用户状态。</p>
 <p>Q1. 当这些数据在后台被更新时（比如老师修改了资源信息），如何保证缓存与数据库的一致性？ 你采用了什么策略？（旁路缓存？读写穿透？）</p>
-<p>A1. 我们使用的是<code>旁路缓存</code>策略来保证缓存与数据库一致性：</p>
+<p>A1. 我们使用的是<strong>旁路缓存</strong>策略来保证缓存与数据库一致性：</p>
 <ul>
 <li>在读数据时，cache 命中就返回，未命中就从 db 中读取返回，随后将数据写入 cache 中</li>
 <li>在写数据时先更新 db，再删除 cache</li>
 </ul>
 <hr>
-<p>于此同时，我们使用 <code>RocketMQ</code> 来存储 DB 更新成功后，异步提交的删除 Cache 操作消息，由独立的消费者监听并执行删除 Cache 操作，于此同时保障消息幂等性，以此应对删除 Cache 可能失败的情况。</p>
+<p>于此同时，我们使用 <code>RocketMQ</code> 来<strong>存储</strong> DB 更新成功后，<strong>异步提交的删除 Cache 操作消息</strong>，由<strong>独立的消费者</strong>监听并执行删除 Cache 操作，于此同时保障消息幂等性，以此应对删除 Cache 可能失败的情况。</p>
 <p>Q2. 为什么是 “更新 DB + 删除 Cache” 而不是 “更新 DB + 更新 Cache”？</p>
 <p>A2. 如果有两个请求都需要更新同一片数据，如果不施加分布式锁，可能出现更新顺序出错的问题。</p>
 <ul>
@@ -235,7 +236,7 @@
 </ul>
 <hr>
 <p>Q3. 如何应对 “先删 Cache，后更新 DB” 的失效问题？</p>
-<p>A3. 一般使用延迟双删的解决方案，即删除缓存，然后修改数据库，然后延时一段时间（500ms）再删缓存。</p>
+<p>A3. 一般使用<strong>延迟双删</strong>的解决方案，即删除缓存，然后修改数据库，然后延时一段时间（500ms）再删缓存。</p>
 <hr>
 <p>Q4. <code>Write DB -&gt; Delete Cache</code> 就万无一失吗？</p>
 <p>A5. 当然不是，读写并发时可能出现读数据在 Cache miss 情况下获取数据后阻塞，写数据完成 db 更新后，读数据重建 Cache 导致不一致的问题。</p>
@@ -246,32 +247,78 @@
 <li>如果放在同一个事务中执行，会增加请求延迟，如果 Cache 响应慢或者失效，会阻塞线程和引发事务回滚。</li>
 </ul>
 <hr>
-<p>Q6. 缓存预热与击穿： 对于极热的热点数据 (如爆款课程元数据)，在 Cache 被删除或失效瞬间，大量请求可能同时穿透到 DB。你们是如何预防的？</p>
-<p>A6. 对于缓存击穿问题，我们采用了互斥锁+逻辑过期+逻辑删除的策略，即通过获取 Redis SETNX 的方式，只允许单个线程重建缓存，其余未能获取到锁的线程则返回过期数据。</p>
+<p>Q6. <strong>缓存预热与击穿</strong>： 对于极热的热点数据 (如爆款课程元数据)，在 Cache 被删除或失效瞬间，大量请求可能同时穿透到 DB。你们是如何预防的？</p>
+<p>A6. 对于缓存击穿问题，我们采用了<strong>互斥锁+逻辑过期+逻辑删除</strong>的策略，即通过获取 Redis SETNX 的方式，只允许单个线程重建缓存，其余未能获取到锁的线程则返回过期数据。</p>
 <ul>
-<li>对于逻辑过期，即在 value 中添加一个 expire 字段，在读数据时检查是否过期；</li>
-<li>对于逻辑删除，我们使用了 Set 数据结构，将需要被删除的数据放入 Set 中，读数据的时候检查是否被删除。</li>
+<li>对于<strong>逻辑过期</strong>，即在 value 中添加一个 expire 字段，在读数据时检查是否过期；</li>
+<li>对于<strong>逻辑删除</strong>，我们使用了 <code>Set</code> 数据结构，将需要被删除的数据放入 <code>Set</code> 中，读数据的时候检查是否被删除。</li>
 </ul>
-<h2 id="布隆过滤器"><a href="#布隆过滤器" class="headerlink" title="布隆过滤器"></a>布隆过滤器</h2><p>你提到用 Guava 的布隆过滤器缓解缓存穿透。</p>
-<p>Q1. 布隆过滤器的原理是什么？它的优缺点是什么？（尤其要关注误判率和不可删除）</p>
-<p>A1. 布隆过滤器是用来缓解缓存穿透问题的工具，通过使用多个 hash 函数对 id 进行计算，以及使用 bitmap 记录计算值的 01 分布。如果某个 id 通过 hash 计算得到多个值中的某个在 bitmap 中为 0，则这个 id 就不存在。</p>
+<h2 id="布隆过滤器"><a href="#布隆过滤器" class="headerlink" title="布隆过滤器"></a>布隆过滤器</h2><p>你提到用 Redission 的布隆过滤器缓解缓存穿透。</p>
+<p>Q1. 布隆过滤器的<strong>原理</strong>是什么？它的<strong>优缺点</strong>是什么？（尤其要关注误判率和不可删除）</p>
+<p>A1. 布隆过滤器是用来缓解<strong>缓存穿透</strong>问题的工具，通过使用多个 hash 函数对 id 进行计算，以及使用 bitmap 记录计算值的 01 分布。如果某个 id 通过 hash 计算得到多个值中的某个在 bitmap 中为 0，则这个 id 就不存在。</p>
 <ul>
-<li>布隆过滤器很大的优点就是内存占用较少，仅需维护 bitmap，不像缓存空数据一样需要记录冗余 Key。</li>
-<li>当然布隆过滤器也有缺点：实现起来比较复杂；存在误判问题，在计算 hash 时，不同的 id 也有可能映射到相同的多个 hash 值中。这一点是可控的，即将 bitmap 容量提高，那么误判率就会下降；以及它的不能扩容和不可删除特性，存入了 id 映射后就不能删除，因为其他 id hash 映射也可能与这个 id 重合或部分重合。</li>
+<li>布隆过滤器很大的优点就是<strong>内存占用较少</strong>，仅需维护 bitmap，不像缓存空数据一样需要记录冗余 Key。</li>
+<li>当然布隆过滤器也有缺点：实现起来比较<strong>复杂</strong>；存在<strong>误判</strong>问题，在计算 hash 时，不同的 id 也有可能映射到相同的多个 hash 值中。这一点是可控的，即将 bitmap 容量提高，那么误判率就会下降；以及它的<strong>不能扩容</strong>和<strong>不可删除</strong>特性，存入了 id 映射后就不能删除，因为<strong>不同元素的哈希位置可能重叠</strong>：删除元素 A 可能导致元素 B 被误判为不存在。</li>
+</ul>
+<p>Q2. 布隆过滤器原理的数学本质？</p>
+<p>A2. 误判率公式， <code>p = (1 - e ^ (-kn/m)) ^ k</code></p>
+<p>n = 元素数量，m = bit 数组长度，k = 哈希函数个数</p>
+<p>优化方向：m / n (每个元素分配 bit 个数) 增大时，p 指数级下降<br>最优：k = (m/n) ln2</p>
+<hr>
+<p>Q3. 在你的场景里，<strong>缓存穿透</strong>具体是指什么请求导致的？<strong>键</strong>是如何构造的？</p>
+<p>A3. 一个比较常见的例子是是用户在直播结束之后没有退出，刷新已结束的直播页面、在已结束的直播间中做各种操作等。像这种请求都会携带直播 ID，许多基于该 ID 缓存的状态变量在直播结束后就会从缓存中删除，从而造成了缓存穿透。再一个就是请求不存在的 id，这种用缓存空值方法就能比较容易解决。</p>
+<ul>
+<li>我的键命名方法是 <code>业务名 + 数据名 + id</code>，比如刚才说到的直播 ID，就是 live:room:uuid，这个 UUID 对应 sql 数据库直播表中存储的 id</li>
 </ul>
 <hr>
-<p>Q2. 在你的场景里，缓存穿透具体是指什么请求导致的？键是如何构造的？</p>
-<p>A2. 一个比较常见的例子是是用户在直播结束之后没有退出，刷新已结束的直播页面、在已结束的直播间中做各种操作等。像这种请求都会携带直播 ID，许多基于该 ID 缓存的状态变量在直播结束后就会从缓存中删除，从而造成了缓存穿透。</p>
-<p>-</p>
+<p>Q4. 为什么选择 <code>Redission</code> 而非 <code>Guava</code>？初始化参数？过滤器更新策略？是如何集成到缓存流程中的？</p>
+<p>A4. <code>Guava</code> 的实现是位于服务器本地的<strong>单机布隆过滤器</strong>，集群环境下需要<strong>独立维护</strong>。而 <code>Redission</code> 是基于 <code>Redis</code> 实现的，整个集群共享同一过滤器。由于项目已经是<strong>分布式架构</strong>了，所以我们选择了 <code>Redission</code> 这种全局一致防护的实现方式。</p>
+<ul>
+<li><p>对于 Redission 布隆过滤器初始化，它需要设定<code>预期元素数量</code>和 <code>p 误判率</code>，对于预期元素数量，我们设定为了历史直播峰值房间数 * 5，通过权衡内存压力与 DB 压力，我们误判率选择 1%。</p>
+</li>
+<li><p>对于过滤器更新策略，新增直播时添加到过滤器中，结束直播时就<strong>不删除过滤器中的内容</strong>，因为有之前提到的<strong>逻辑删除保底</strong>；当然这样做会导致旧的 key 越来越多，我们就需要<strong>定期重建过滤器</strong>。我们每三天会用<strong>有效</strong> <code>roomID</code> <strong>全量重建</strong>。</p>
+</li>
+</ul>
+<h2 id="实时状态同步"><a href="#实时状态同步" class="headerlink" title="实时状态同步"></a>实时状态同步</h2><p>Q1. 你使用了 Redis 的哪些<strong>数据结构和特性</strong>来实现？</p>
+<p>A1. 基于已有业务，我们使用了 <code>String</code> 计数直播<strong>点赞数</strong>；使用了 <code>Hash</code> 结构来实现直播间中<strong>需要实时更新的各种数据</strong>；如直播状态、直播间人数等；使用了 <code>Sorted Set</code> 实现<strong>房间总人数、举手、直播间发消息</strong>功能。使用了 <code>Pub/Sub</code> 来实现<strong>无需持久化</strong>的<strong>实时消息广播</strong>，如加入直播间消息、实时弹幕（直播消息）、写作文档光标位置。</p>
 <hr>
-<p>Q3. 为什么选择 Guava 的本地布隆过滤器而不是 Redis 自带的 BF 模块？是如何集成到缓存流程中的？</p>
-<p>A1.</p>
-<h2 id="实时状态同步"><a href="#实时状态同步" class="headerlink" title="实时状态同步"></a>实时状态同步</h2><p>Q1. 你使用了 Redis 的哪些数据结构和特性来实现？</p>
-<p>Q2. Pub/Sub 在这里扮演什么角色？</p>
-<p>Q3. 如何保证大量状态更新时的性能和可靠性？</p>
+<p>Q2. <code>Pub/Sub</code> 在这里扮演什么角色？</p>
+<p>A2. 考虑 <code>Pub/Sub 局限性</code>：</p>
+<ul>
+<li><p>由于 <code>Redis</code> 是基于内存的，而且 <code>Pub/Sub</code> 也是保存到了<strong>内存的字典数据结构</strong>中，所以发布的<strong>消息不会被持久化</strong>。一旦<strong>客户机下线或者重新上线</strong>，上线前已经发布过的消息是不会被订阅到的。</p>
+</li>
+<li><p>其次，<code>Redis</code> <strong>客户端对象相应缓存有限制</strong>，一旦超过限制就会<strong>强制关闭</strong> clinet，客户端还需<strong>重新订阅</strong>关系。</p>
+</li>
+<li>那么 <code>Redis</code> 的 <code>Pub/Sub</code> 就不能用来作为<strong>消息队列</strong>，只能用来<strong>实时消息广播</strong>。在我们的业务场景中，Pub/Sub 通常作为无需持久化的实时消息推送，如用户加入房间通知、实时弹幕、协作文档光标位置等。</li>
+</ul>
+<hr>
+<p>Q3. 如何保证大量状态更新时的<strong>性能和可靠性</strong>？</p>
+<p>A3. 分架构和 Redis 优化两个层面来回答：</p>
+<ul>
+<li><p>首先是<strong>架构层面</strong>，</p>
+<ol>
+<li>使用 <strong>Redis 集群</strong>架构，通过将不同直播间数据分片到不同的物理节点上，分散单点直播间巨大压力，<strong>避免单点瓶颈</strong>。</li>
+<li>通过<strong>读写分离</strong>分散 master 读密集操作压力。</li>
+<li>最后是将状态存储与消息广播型<strong>集群功能分离</strong>，使用专门实例负责 Pub/Sub，配置高带宽，避免广播流量挤占状态存储 CPU/网络资源。</li>
+</ol>
+</li>
+<li><p>其次是 <strong>Redis 优化</strong>，对于内存，合理控制 <strong>Key</strong> 大小，控制 <strong>String Value</strong> 大小；对于持久化，结合 <strong>RDB + AOF</strong> 保障需要持久化的数据，对于无需持久化数据则设置 <code>save &quot;&quot;</code> 禁用持久化。</p>
+</li>
+</ul>
+<hr>
 <p>Q4. 是否遇到消息积压问题？</p>
-<p>A.</p>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ali5669.github.io">Ali5669</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ali5669.github.io/2025/07/21/%E9%9D%A2%E8%AF%95%E6%A8%A1%E6%8B%9F-Redis/">https://ali5669.github.io/2025/07/21/%E9%9D%A2%E8%AF%95%E6%A8%A1%E6%8B%9F-Redis/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://ali5669.github.io" target="_blank">Ali5669</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Redis/">Redis</a><a class="post-meta__tags" href="/tags/Session/">Session</a><a class="post-meta__tags" href="/tags/Https/">Https</a></div><div class="post_share"><div class="social-share" data-image="/images/avatar.gif" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/07/23/%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C-%E5%B0%8F%E9%B9%8F%E6%8A%80%E6%9C%AF%E9%9D%A2%E4%BA%8C%E9%9D%A2-%E5%87%89%E7%BB%8F/" title="面试经验-小鹏技术面二面-凉经"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">面试经验-小鹏技术面二面-凉经</div></div></a></div><div class="next-post pull-right"><a href="/2025/07/14/%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C-%E5%B0%8F%E9%B9%8F%E6%8A%80%E6%9C%AF%E9%9D%A2/" title="面试经验-小鹏技术面"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">面试经验-小鹏技术面</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/avatar.gif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Ali5669</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">48</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ali5669"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">爱你</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AE%B9"><span class="toc-number">2.</span> <span class="toc-text">内容</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Session-%E7%AE%A1%E7%90%86%E4%BC%98%E5%8C%96"><span class="toc-number">2.1.</span> <span class="toc-text">Session 管理优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%83%AD%E7%82%B9%E6%95%B0%E6%8D%AE%E7%BC%93%E5%AD%98"><span class="toc-number">2.2.</span> <span class="toc-text">热点数据缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">2.3.</span> <span class="toc-text">布隆过滤器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%97%B6%E7%8A%B6%E6%80%81%E5%90%8C%E6%AD%A5"><span class="toc-number">2.4.</span> <span class="toc-text">实时状态同步</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/23/%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C-%E5%B0%8F%E9%B9%8F%E6%8A%80%E6%9C%AF%E9%9D%A2%E4%BA%8C%E9%9D%A2-%E5%87%89%E7%BB%8F/" title="面试经验-小鹏技术面二面-凉经">面试经验-小鹏技术面二面-凉经</a><time datetime="2025-07-23T09:14:28.000Z" title="发表于 2025-07-23 17:14:28">2025-07-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/21/%E9%9D%A2%E8%AF%95%E6%A8%A1%E6%8B%9F-Redis/" title="面试模拟-Redis">面试模拟-Redis</a><time datetime="2025-07-21T02:35:16.000Z" title="发表于 2025-07-21 10:35:16">2025-07-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/14/%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C-%E5%B0%8F%E9%B9%8F%E6%8A%80%E6%9C%AF%E9%9D%A2/" title="面试经验-小鹏技术面">面试经验-小鹏技术面</a><time datetime="2025-07-14T09:04:28.000Z" title="发表于 2025-07-14 17:04:28">2025-07-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/09/LC-day-15-%E6%9B%B4%E5%BF%AB%E6%9B%B4%E5%A5%BD%E7%9A%84%E5%9B%9E%E6%BA%AF/" title="LC-day-15-更快更好的回溯">LC-day-15-更快更好的回溯</a><time datetime="2025-07-09T06:12:11.000Z" title="发表于 2025-07-09 14:12:11">2025-07-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/08/LC-day-14-%E5%9B%9E%E6%BA%AF%E4%B8%8E%E5%89%AA%E6%9E%9D/" title="LC-day-14-回溯与剪枝">LC-day-14-回溯与剪枝</a><time datetime="2025-07-08T02:06:39.000Z" title="发表于 2025-07-08 10:06:39">2025-07-08</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By Ali5669</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+<p>A4. 其实这个问题本质就是因为 Pub/Sub 本身<strong>不持久化消息</strong>，但发布的消息会暂存在<strong>每个订阅者的输出缓冲区</strong>中。</p>
+<p>积压触发条件有：</p>
+<ul>
+<li><p><strong>消费者处理能力不足</strong> (慢消费者)：客户端（如 WebSocket 服务实例）消费消息的速度跟不上发布速度。</p>
+</li>
+<li><p><strong>网络延迟/抖动</strong>：消费者与 Redis 节点之间的网络不稳定。</p>
+</li>
+<li><p><strong>消费者宕机/重启</strong>：断开期间的消息会直接丢失（无积压，但需重建状态）。</p>
+</li>
+</ul>
+<p>这三种情况都非常常见，我们的解决办法一般是使用 Grafana 监测 Redis 实时指标，根据预警提前扩容 Redis 和消费者集群。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ali5669.github.io">Ali5669</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ali5669.github.io/2025/07/21/%E9%9D%A2%E8%AF%95%E6%A8%A1%E6%8B%9F-Redis/">https://ali5669.github.io/2025/07/21/%E9%9D%A2%E8%AF%95%E6%A8%A1%E6%8B%9F-Redis/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://ali5669.github.io" target="_blank">Ali5669</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Redis/">Redis</a><a class="post-meta__tags" href="/tags/Session/">Session</a><a class="post-meta__tags" href="/tags/Pub-Sub/">Pub/Sub</a><a class="post-meta__tags" href="/tags/Https/">Https</a></div><div class="post_share"><div class="social-share" data-image="/images/avatar.gif" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/07/23/%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C-%E5%B0%8F%E9%B9%8F%E6%8A%80%E6%9C%AF%E9%9D%A2%E4%BA%8C%E9%9D%A2-%E5%87%89%E7%BB%8F/" title="面试经验-小鹏技术面二面-凉经"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">面试经验-小鹏技术面二面-凉经</div></div></a></div><div class="next-post pull-right"><a href="/2025/07/14/%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C-%E5%B0%8F%E9%B9%8F%E6%8A%80%E6%9C%AF%E9%9D%A2/" title="面试经验-小鹏技术面"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">面试经验-小鹏技术面</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/avatar.gif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Ali5669</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">49</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ali5669"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">爱你</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AE%B9"><span class="toc-number">2.</span> <span class="toc-text">内容</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Session-%E7%AE%A1%E7%90%86%E4%BC%98%E5%8C%96"><span class="toc-number">2.1.</span> <span class="toc-text">Session 管理优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%83%AD%E7%82%B9%E6%95%B0%E6%8D%AE%E7%BC%93%E5%AD%98"><span class="toc-number">2.2.</span> <span class="toc-text">热点数据缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">2.3.</span> <span class="toc-text">布隆过滤器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%97%B6%E7%8A%B6%E6%80%81%E5%90%8C%E6%AD%A5"><span class="toc-number">2.4.</span> <span class="toc-text">实时状态同步</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/23/%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C-%E5%B0%8F%E9%B9%8F%E6%8A%80%E6%9C%AF%E9%9D%A2%E4%BA%8C%E9%9D%A2-%E5%87%89%E7%BB%8F/" title="面试经验-小鹏技术面二面-凉经">面试经验-小鹏技术面二面-凉经</a><time datetime="2025-07-23T09:14:28.000Z" title="发表于 2025-07-23 17:14:28">2025-07-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/21/%E9%9D%A2%E8%AF%95%E6%A8%A1%E6%8B%9F-Redis/" title="面试模拟-Redis">面试模拟-Redis</a><time datetime="2025-07-21T02:35:16.000Z" title="发表于 2025-07-21 10:35:16">2025-07-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/14/%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C-%E5%B0%8F%E9%B9%8F%E6%8A%80%E6%9C%AF%E9%9D%A2/" title="面试经验-小鹏技术面">面试经验-小鹏技术面</a><time datetime="2025-07-14T09:04:28.000Z" title="发表于 2025-07-14 17:04:28">2025-07-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/09/LC-day-15-%E6%9B%B4%E5%BF%AB%E6%9B%B4%E5%A5%BD%E7%9A%84%E5%9B%9E%E6%BA%AF/" title="LC-day-15-更快更好的回溯">LC-day-15-更快更好的回溯</a><time datetime="2025-07-09T06:12:11.000Z" title="发表于 2025-07-09 14:12:11">2025-07-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/08/LC-day-14-%E5%9B%9E%E6%BA%AF%E4%B8%8E%E5%89%AA%E6%9E%9D/" title="LC-day-14-回溯与剪枝">LC-day-14-回溯与剪枝</a><time datetime="2025-07-08T02:06:39.000Z" title="发表于 2025-07-08 10:06:39">2025-07-08</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By Ali5669</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
   window.MathJax = {
     tex: {
       inlineMath: [['$', '$'], ['\\(', '\\)']],
