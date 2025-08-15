@@ -1,0 +1,631 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>八股基础-JAVA | Ali5669</title><meta name="author" content="Ali5669"><meta name="copyright" content="Ali5669"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言感觉八股背诵的针对性不强，来对简历里面已写的进行一个排查。 专业技能描述掌握 Java 语法，熟悉集合、反射、IO，了解 JUC 并发编程，熟悉 JVM 垃圾回收、内存模型，熟悉线程池原理，掌握常⻅的设计模式。 内容集合 HashMap 的底层实现原理是什么？JDK 1.8 做了哪些重要优化？HashMap 是线程安全的吗？如果不安全，有哪些替代方案？  原理：数组 + 链表&#x2F;红黑树。通过 k">
+<meta property="og:type" content="article">
+<meta property="og:title" content="八股基础-JAVA">
+<meta property="og:url" content="https://ali5669.github.io/2025/08/14/%E5%85%AB%E8%82%A1%E5%9F%BA%E7%A1%80-JAVA/index.html">
+<meta property="og:site_name" content="Ali5669">
+<meta property="og:description" content="前言感觉八股背诵的针对性不强，来对简历里面已写的进行一个排查。 专业技能描述掌握 Java 语法，熟悉集合、反射、IO，了解 JUC 并发编程，熟悉 JVM 垃圾回收、内存模型，熟悉线程池原理，掌握常⻅的设计模式。 内容集合 HashMap 的底层实现原理是什么？JDK 1.8 做了哪些重要优化？HashMap 是线程安全的吗？如果不安全，有哪些替代方案？  原理：数组 + 链表&#x2F;红黑树。通过 k">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ali5669.github.io/images/avatar.gif">
+<meta property="article:published_time" content="2025-08-14T07:38:30.000Z">
+<meta property="article:modified_time" content="2025-08-14T08:35:32.324Z">
+<meta property="article:author" content="Ali5669">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ali5669.github.io/images/avatar.gif"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://ali5669.github.io/2025/08/14/%E5%85%AB%E8%82%A1%E5%9F%BA%E7%A1%80-JAVA/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '八股基础-JAVA',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-08-14 16:35:32'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/avatar.gif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">58</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ali5669"><span class="site-name">Ali5669</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">八股基础-JAVA</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-08-14T07:38:30.000Z" title="发表于 2025-08-14 15:38:30">2025-08-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-08-14T08:35:32.324Z" title="更新于 2025-08-14 16:35:32">2025-08-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span id="" data-flag-title="八股基础-JAVA"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="twikoo_visitors"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>感觉八股背诵的针对性不强，来对简历里面已写的进行一个排查。</p>
+<h1 id="专业技能描述"><a href="#专业技能描述" class="headerlink" title="专业技能描述"></a>专业技能描述</h1><p>掌握 Java 语法，熟悉集合、反射、IO，了解 JUC 并发编程，熟悉 JVM 垃圾回收、内存模型，熟悉线程<br>池原理，掌握常⻅的设计模式。</p>
+<h1 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h1><h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><ul>
+<li><p><code>HashMap</code> 的底层实现原理是什么？JDK 1.8 做了哪些重要优化？<code>HashMap</code> 是线程安全的吗？如果不安全，有哪些替代方案？</p>
+<ul>
+<li><p><strong>原理：</strong><code>数组 + 链表/红黑树</code>。通过 <code>key</code> 的 <code>hashCode()</code> 计算哈希值，再通过<strong>扰动函数</strong>（高 16 位异或低 16 位）和 <code>(n-1) &amp; hash</code> 确定数组下标。<strong>哈希冲突</strong>时，<code>JDK 1.7</code>采用<strong>头插法</strong>形成链表，<code>JDK 1.8</code> 采用<strong>尾插法</strong>。当<strong>链表长度超过阈值</strong>（默认 8）<code>且</code><strong>数组长度 &gt;= 64</strong> 时，链表转化为红黑树（提升查找效率）；当红黑树节点数<strong>小于阈值</strong>（默认 6）时，退化为链表。</p>
+</li>
+<li><p><strong>JDK 1.8 优化：</strong></p>
+<ol>
+<li><p><strong>数据结构：</strong> 引入红黑树，解决长链表查询效率低的问题（O(n) -&gt; O(log n)）。</p>
+</li>
+<li><p><strong>插入方式：</strong> 链表由头插法改为尾插法（避免多线程扩容时可能的死循环问题，虽然 HashMap 本身线程不安全）。</p>
+</li>
+<li><p><strong>扩容机制：</strong> 优化了 resize()方法逻辑，利用高位 1/0 直接确定新位置（原位置或原位置+旧容量），避免重新计算哈希。</p>
+</li>
+<li><p><strong>hash() 计算简化：</strong> 直接用 key.hashCode()的高 16 位异或低 16 位作为扰动，计算更简单。</p>
+</li>
+</ol>
+</li>
+<li><p><strong>线程安全：</strong> <code>HashMap</code> 不是线程安全的。替代方案：</p>
+<ol>
+<li><p><code>Hashtable</code>：古老，所有方法加 <code>synchronized</code>，性能差。</p>
+</li>
+<li><p><code>Collections.synchronizedMap(Map m)</code>：包装器，性能也较差。</p>
+</li>
+<li><p><code>ConcurrentHashMap</code> (推荐)： JDK 1.7 使用分段锁（Segment），JDK 1.8 改为 <code>synchronized + CAS 锁桶</code>（Node 数组的头节点），锁粒度更细，并发度更高。读操作通常无锁（volatile 保证可见性）。</p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li><p><code>ConcurrentHashMap</code> 在 JDK 1.7 和 JDK 1.8 的实现有什么区别？</p>
+<ul>
+<li><p><strong>JDK 1.7</strong>： 采用 分段锁 (<code>Segment</code>) 机制。整个 <code>Map</code> 被分成多个 <code>Segment</code>（默认 16 个），每个 <code>Segment</code> 是一个独立的 <code>ReentrantLock</code>。<code>put</code> 操作只锁住目标 <code>Segment</code>，<code>get</code> 操作通常不加锁（使用 <code>volatile</code> 变量保证可见性）。<code>size</code> 操作需要尝试不加锁统计两次，如果两次结果一致则返回，否则锁住所有 <code>Segment</code> 再统计。</p>
+</li>
+<li><p><strong>JDK 1.8</strong>： 摒弃了 <code>Segment</code>，采用 <code>synchronized</code> + <code>CAS</code> + <code>volatile</code> 实现。数据结构与 <code>HashMap 1.8</code> 类似（数组+链表/红黑树）。锁的粒度是桶（数组元素/链表头节点/树根节点）。</p>
+</li>
+<li><p><code>put</code> 操作：</p>
+<ol>
+<li><p>如果桶为空，用 <code>CAS</code> 尝试写入头节点。</p>
+</li>
+<li><p>如果桶不为空（链表或树），则 <code>synchronized</code> 锁住该桶的头节点进行操作。</p>
+</li>
+<li><p><code>get</code> 操作无锁（依赖 <code>volatile</code> 读）。</p>
+</li>
+<li><p><code>size</code> 使用 <code>LongAdder</code> 思想（<code>baseCount + CounterCell[]</code>）统计，避免锁竞争。</p>
+</li>
+</ol>
+</li>
+<li><p><strong>核心区别：</strong> 锁粒度（Segment vs 桶）、锁实现（ReentrantLock vs synchronized）、并发度（受 Segment 数量限制 vs 理论上与桶数量一致）、数据结构（1.7 桶只有链表 vs 1.8 链表/红黑树）。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><ul>
+<li><p>什么是 Java 反射机制？反射的主要优缺点是什么？如何获取一个类的 Class 对象？</p>
+<ul>
+<li><p><strong>概念：</strong> 反射机制允许程序在运行时动态加载类、获取类的信息（属性、方法、构造器等）、创建对象、调用方法、访问/修改字段。核心 API 在 java.lang.reflect 包中（Class, Field, Method, Constructor）。</p>
+</li>
+<li><p><strong>优点：</strong></p>
+<ol>
+<li><p><strong>灵活性/动态性：</strong> 可以在运行时根据条件动态加载和操作类，实现框架、动态代理等。</p>
+</li>
+<li><p><strong>代码通用性：</strong> 可以编写通用的工具类（如序列化、BeanUtils）。</p>
+</li>
+</ol>
+</li>
+<li><p><strong>缺点：</strong></p>
+<ol>
+<li><p><strong>性能开销：</strong> 反射操作比直接调用慢很多（JIT 无法优化，方法调用需要检查访问权限等）。</p>
+</li>
+<li><p><strong>安全性问题：</strong> 可以访问和修改私有成员，破坏了封装性。</p>
+</li>
+<li><p><strong>代码可读性和维护性降低：</strong> 反射代码通常比较晦涩。</p>
+</li>
+</ol>
+</li>
+<li><p><strong>获取 Class 对象的 3 种常见方式：</strong></p>
+<ol>
+<li><p><code>Class.forName(&quot;全限定类名&quot;)</code> (常用，需要处理 <code>ClassNotFoundException</code>)。</p>
+</li>
+<li><p><code>对象.getClass()</code> (如：”hello”.getClass())。</p>
+</li>
+<li><p><code>类名.class</code> (如：String.class)。这种方式最安全，性能最好，在编译时检查。</p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h2><ul>
+<li><p>Java 中的 BIO、NIO、AIO 有什么区别？谈谈你对 NIO 核心组件(Channel, Buffer, Selector) 的理解。</p>
+<ul>
+<li><p>区别：</p>
+<ol>
+<li><p><code>BIO</code> (Blocking I/O, 同步阻塞)： 一个连接对应一个线程。线程发起 I/O 请求后，会一直阻塞等待数据就绪和数据拷贝完成。模型简单，但线程开销大，并发连接数受限。适用于连接数少且固定的场景。</p>
+</li>
+<li><p><code>NIO</code> (Non-blocking I/O / New I/O, 同步非阻塞)： 核心是 Selector、Channel 和 Buffer。线程将 Channel 注册到 Selector 上，Selector 轮询这些 Channel。当某个 Channel 上有事件（如连接就绪、读就绪、写就绪）时，Selector 通知线程处理。一个线程可以处理多个连接（多路复用）。线程在数据就绪前可以做其他事（非阻塞），但数据就绪后的数据拷贝过程（从内核到用户空间）仍然是同步/阻塞的。</p>
+</li>
+<li><p><code>AIO</code> (Asynchronous I/O, 异步非阻塞)： 应用发起 I/O 操作（如 read）后立即返回，操作系统完成整个 I/O 操作（包括数据就绪和数据拷贝）后，再通知应用处理结果（通过回调函数或 Future）。真正的异步。在 Linux 上底层基于 epoll，但实现不成熟，应用较少。</p>
+</li>
+</ol>
+</li>
+<li><p>NIO 核心组件：</p>
+<ol>
+<li><p><code>Channel</code> (通道)： 数据的双向传输通道（区别于流的单向）。代表与实体（文件、Socket 等）的连接。常见的有 FileChannel, SocketChannel, ServerSocketChannel, DatagramChannel。</p>
+</li>
+<li><p><code>Buffer</code> (缓冲区)： 数据的载体。本质是一个数组。读写数据都需要经过 Buffer。核心属性：capacity(容量), position(当前位置), limit(可操作上限), mark(标记)。读写模式切换：flip() (写-&gt;读), clear() (读-&gt;写, 不清数据), compact() (读-&gt;写, 保留未读数据)。</p>
+</li>
+<li><p><code>Selector</code> (选择器)： NIO 多路复用的核心。一个 Selector 可以监听多个 Channel 上的事件（OP_ACCEPT, OP_CONNECT, OP_READ, OP_WRITE）。线程调用 select() 方法阻塞等待事件发生（也可设置超时或非阻塞），然后通过 selectedKeys() 获取发生事件的 SelectionKey 集合进行处理。</p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="JUC"><a href="#JUC" class="headerlink" title="JUC"></a>JUC</h2><ul>
+<li><p><code>volatile</code> 关键字有什么作用？它的底层实现原理是什么？它能保证原子性吗？</p>
+<ul>
+<li><p><strong>作用：</strong></p>
+<ol>
+<li><p><strong>保证可见性：</strong> 当一个线程修改了 volatile 变量的值，新值会立即刷新到主内存。其他线程读取该变量时，会强制从主内存重新读取最新值。</p>
+</li>
+<li><p><strong>禁止指令重排序：</strong> 编译器、运行时和处理器会进行指令重排序优化。volatile 通过插入内存屏障 (Memory Barrier) 来禁止特定类型的重排序。</p>
+</li>
+</ol>
+</li>
+<li><p><strong>底层原理</strong> (内存屏障)：</p>
+<ol>
+<li><p><strong>写屏障</strong> (Store Barrier / StoreStore Barrier / StoreLoad Barrier)： 在 volatile 写操作之前和之后插入屏障。确保写操作前的所有普通写对其他线程可见（刷新到主存），并防止写屏障前的指令与 volatile 写重排序。</p>
+</li>
+<li><p><strong>读屏障</strong> (Load Barrier / LoadLoad Barrier / LoadStore Barrier)： 在 volatile 读操作之前和之后插入屏障。确保 volatile 读之后的操作能读到最新值（清空本地缓存/无效化缓存行），并防止 volatile 读之后的指令重排序到读操作之前。</p>
+</li>
+<li><p><strong>具体实现：</strong> 主要依赖 CPU 的 lock 指令前缀（如 x86 的 lock; addl $0x0, (%esp)）或 MESI 缓存一致性协议来实现内存可见性。禁止重排序依赖 JVM 在编译器生成的字节码和 JIT 生成的机器码中插入屏障指令。</p>
+</li>
+</ol>
+</li>
+<li><p><strong>原子性：</strong> volatile 不能保证原子性。它只保证了单次读/写操作的原子性（long/double 的读写在 64 位 JVM 上也具有原子性），但对于复合操作（如 i++）无效。i++ 实际上是 read-modify-write 三步操作，volatile 无法保证这三步作为一个整体不被其他线程打断。需要原子性时，应使用 synchronized 或 java.util.concurrent.atomic 包下的原子类（如 AtomicInteger，基于 CAS）。</p>
+</li>
+</ul>
+</li>
+<li><p><code>synchronized</code> 和 <code>ReentrantLock</code> 有什么区别？</p>
+<ul>
+<li><p><strong>本质：</strong> <code>synchronized</code> 是 JVM 层面的关键字，依赖于底层监视器锁（Monitor）。<code>ReentrantLock</code> 是 JDK 层面的 API (java.util.concurrent.locks.Lock 接口的实现类)。</p>
+</li>
+<li><p><strong>使用：</strong> <code>synchronized</code> 使用简洁（隐式加锁解锁）。<code>ReentrantLock</code> 需要显式调用 lock() 和 unlock()（必须在 finally 中解锁），更灵活但也更易出错。</p>
+</li>
+<li><p><strong>功能：</strong></p>
+<ol>
+<li><p><strong>公平锁：</strong> <code>synchronized</code> 只有非公平锁。<code>ReentrantLock</code> 可以指定为公平锁（new ReentrantLock(true)）或非公平锁（默认）。</p>
+</li>
+<li><p><strong>等待可中断：</strong> <code>synchronized</code> 等待不可中断（除非异常）。<code>ReentrantLock</code> 提供 <code>lockInterruptibly()</code> 方法，允许线程在等待锁时响应中断。</p>
+</li>
+<li><p><strong>尝试获取锁：</strong> <code>ReentrantLock</code> 提供 <code>tryLock()</code> 方法（立即返回是否成功）和 <code>tryLock(long time, TimeUnit unit)（超时等待）</code>。</p>
+</li>
+<li><p><strong>条件队列</strong> (<code>Condition</code>)： <code>synchronized</code> 只关联一个隐式的等待/通知队列 (wait()/notify()/notifyAll())<code>。ReentrantLock</code> 可以关联多个 <code>Condition</code> 对象（newCondition()），实现更精细的线程等待/唤醒控制（如生产者-消费者模型中区分空/满条件）。</p>
+</li>
+</ol>
+</li>
+<li><p><strong>性能：</strong> 在 JDK 1.6 及之后，<code>synchronized</code> 经过大量优化（偏向锁、轻量级锁、适应性自旋锁、锁消除、锁粗化等），两者性能差距已很小，甚至 <code>synchronized</code> 在某些场景下可能更优。选择时优先考虑 <code>synchronized</code>（简洁安全），需要高级功能时再用 <code>ReentrantLock</code>。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h2><h3 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h3><ul>
+<li><p>常见的垃圾回收器有哪些？CMS 和 G1 的主要区别是什么？</p>
+<ul>
+<li><p><strong>常见回收器：</strong></p>
+<ol>
+<li><p><strong>新生代：</strong> Serial, ParNew, Parallel Scavenge</p>
+</li>
+<li><p><strong>老年代：</strong> Serial Old, Parallel Old, CMS</p>
+</li>
+<li><p><strong>整堆：</strong> G1, ZGC, Shenandoah</p>
+</li>
+</ol>
+</li>
+<li><p><strong>CMS vs G1：</strong></p>
+<ol>
+<li><p><strong>目标：</strong> CMS 目标是低停顿时间。G1 目标是可预测的停顿时间模型 (STW 停顿时间可控)，同时兼顾高吞吐量。</p>
+</li>
+<li><p><strong>区域划分：</strong> CMS 基于传统的 新生代 (Young Gen) + 老年代 (Old Gen) 物理连续划分。G1 将堆划分为多个大小相等的 Region (区域)，逻辑上保留了 Eden、Survivor、Old 的概念，但物理上不要求连续。</p>
+</li>
+<li><p><strong>算法：</strong> CMS 老年代收集使用 标记-清除 (Mark-Sweep)，会产生碎片。G1 整体上是 标记-整理 (Mark-Compact) 算法（局部 Region 之间是复制算法），整体上减少了碎片问题。</p>
+</li>
+<li><p><strong>工作过程：</strong></p>
+<ul>
+<li><p><code>CMS</code>: 1. 初始标记 (STW) -&gt; 2. 并发标记 -&gt; 3. 重新标记 (STW) -&gt; 4. 并发清除。</p>
+</li>
+<li><p><code>G1</code>: 1. 初始标记 (STW) -&gt; 2. 并发标记 -&gt; 3. 最终标记 (STW) -&gt; 4. 筛选回收 (STW - Evacuation)。G1 的回收阶段（Evacuation）是选择回收价值最高（垃圾最多）的几个 Region 进行复制清理，控制每次停顿的时间。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>适用场景：</strong> CMS 适用于对停顿敏感、老年代不太大的应用（关注服务响应）。G1 适用于大内存（&gt;=6GB）、要求停顿可控、高吞吐的应用。CMS 在 JDK 9 被标记为废弃，JDK 14 中被移除。G1 是 JDK 9+ 的默认回收器。</p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h3><ul>
+<li><p>简述 Java 的内存区域（运行时数据区）。哪些区域是线程共享的，哪些是线程私有的？哪些区域会发生 OutOfMemoryError (OOM)？</p>
+<ul>
+<li><p><strong>内存区域</strong> (JDK 8)：</p>
+<ol>
+<li><p><strong>程序计数器</strong> (Program Counter Register)： 线程私有。记录当前线程执行的字节码指令地址（分支、循环、跳转、异常处理、线程恢复都依赖它）。唯一不会发生 OOM 的区域。</p>
+</li>
+<li><p><strong>Java 虚拟机栈</strong> (Java Virtual Machine Stacks)： 线程私有。生命周期与线程相同。每个方法执行会创建一个栈帧 (Stack Frame) 用于存储局部变量表、操作数栈、动态链接、方法出口等信息。方法调用对应栈帧入栈，方法结束对应栈帧出栈。</p>
+<ul>
+<li><p>局部变量表： 存放编译期可知的基本数据类型、对象引用 (reference)、returnAddress 类型。</p>
+</li>
+<li><p>可能发生的异常： StackOverflowError (线程请求的栈深度 &gt; 虚拟机允许深度)、OutOfMemoryError (如果栈可动态扩展，扩展时无法申请到足够内存)。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>本地方法栈</strong> (Native Method Stack)： 线程私有。为 JVM 调用本地 (native) 方法服务。规范未强制规定，HotSpot 将其与虚拟机栈合并。异常同虚拟机栈。</p>
+</li>
+<li><p><strong>Java 堆</strong> (Java Heap)： 线程共享。JVM 管理的最大一块内存。唯一目的就是存放对象实例和数组（“几乎”所有对象都在堆上分配）。是垃圾收集器管理的主要区域 (GC Heap)。可以物理上不连续，但逻辑上连续。可细分为 Eden、Survivor (S0, S1)、老年代。</p>
+<ul>
+<li>可能发生的异常： OutOfMemoryError (堆中没有足够内存完成实例分配，并且堆无法再扩展)。</li>
+</ul>
+</li>
+<li><p><strong>方法区</strong> (Method Area)： 线程共享。存储已被 JVM 加载的类型信息、常量、静态变量、即时编译器编译后的代码缓存等。JDK 7 及之前通常被称为“永久代”(PermGen)。JDK 8 及之后，元空间 (Metaspace) 取代了永久代，使用本地内存 (Native Memory) 实现。</p>
+<ul>
+<li>可能发生的异常： OutOfMemoryError (元空间/永久代无法满足新的内存分配需求)。</li>
+</ul>
+</li>
+<li><p><strong>运行时常量池</strong> (Runtime Constant Pool)： 方法区的一部分。存放编译期生成的各种字面量（整数、浮点数、字符串字面量）和符号引用（类和接口的全限定名、字段的名称和描述符、方法的名称和描述符）。也允许在运行期间将新的常量放入池中（如 String.intern()）。</p>
+<ul>
+<li>可能发生的异常： OutOfMemoryError (当常量池无法再申请到内存时)。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p><strong>线程共享：</strong> Java 堆、方法区（元空间）。</p>
+</li>
+<li><p><strong>线程私有：</strong> 程序计数器、Java 虚拟机栈、本地方法栈。</p>
+</li>
+<li><p><strong>发生 OOM 的区域：</strong> Java 堆、虚拟机栈、本地方法栈、方法区（元空间/永久代）、运行时常量池（作为方法区的一部分）。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h2><ul>
+<li><p>线程池的 ThreadPoolExecutor 的核心构造参数有哪几个？它们分别代表什么含义？线程池的饱和策略有哪些？</p>
+<ul>
+<li><p><strong>核心构造参数</strong> (7 个)：</p>
+<ol>
+<li><p><code>corePoolSize</code> (核心线程数)： 线程池长期维持的线程数量，即使它们处于空闲状态。除非设置了 allowCoreThreadTimeOut。</p>
+</li>
+<li><p><code>maximumPoolSize</code> (最大线程数)： 线程池允许创建的最大线程数量。</p>
+</li>
+<li><p><code>keepAliveTime</code> (空闲线程存活时间)： 当线程数大于 corePoolSize 时，非核心线程空闲超过此时间将被终止销毁。</p>
+</li>
+<li><p><code>unit</code> (时间单位)： keepAliveTime 的时间单位。</p>
+</li>
+<li><p><code>workQueue</code> (工作队列)： 用于保存等待执行任务的阻塞队列。常见的有 LinkedBlockingQueue (无界队列，慎用), ArrayBlockingQueue (有界队列), SynchronousQueue (直接移交队列), PriorityBlockingQueue (优先级队列)。</p>
+</li>
+<li><p><code>threadFactory</code> (线程工厂)： 用于创建新线程的工厂。可以设置线程名、优先级、守护线程等。</p>
+</li>
+<li><p><code>handler</code> (拒绝策略/饱和策略)： 当线程池已关闭，或线程池达到最大线程数且工作队列已满时，新提交的任务将如何处理的策略。</p>
+</li>
+</ol>
+</li>
+<li><p><strong>线程池工作流程：</strong></p>
+<ol>
+<li><p>提交任务 (<code>execute()/submit()</code>)。</p>
+</li>
+<li><p>如果当前运行线程数 &lt; <code>corePoolSize</code>，则立即创建新线程执行任务（即使有空闲核心线程）。</p>
+</li>
+<li><p>如果运行线程数 &gt;= <code>corePoolSize</code>，则尝试将任务放入 <code>workQueue</code> 排队。</p>
+</li>
+<li><p>如果 workQueue 已满，则尝试创建新的非核心线程执行任务（前提是线程数 &lt; <code>maximumPoolSize</code>)。</p>
+</li>
+<li><p>如果线程数已达 <code>maximumPoolSize</code> 且 <code>workQueue</code> 已满，则触发拒绝策略 (handler)。</p>
+</li>
+</ol>
+</li>
+<li><p><strong>饱和策略</strong> (拒绝策略) - <code>RejectedExecutionHandler</code> 接口实现：</p>
+<ol>
+<li><p><code>AbortPolicy</code> (默认策略)： 直接抛出 <code>RejectedExecutionException</code> 异常。推荐策略，让调用者感知到异常并进行处理。</p>
+</li>
+<li><p><code>CallerRunsPolicy：</code> 由提交任务的线程自己来执行这个任务（谁提交谁执行）。这既不会丢弃任务，又降低了新任务提交速度，给线程池缓冲时间。</p>
+</li>
+<li><p><code>DiscardPolicy：</code> 静默丢弃无法处理的新任务，不抛异常。</p>
+</li>
+<li><p><code>DiscardOldestPolicy：</code> 丢弃工作队列中等待最久（队头）的任务，然后尝试重新提交当前任务。</p>
+</li>
+</ol>
+</li>
+<li><p>自定义策略： 实现 <code>RejectedExecutionHandler</code> 接口，根据业务需求定制（如记录日志、持久化任务等）。</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>如何合理地配置线程池参数？</li>
+</ul>
+<p>没有绝对标准，需要结合实际场景和监控调优：</p>
+<ul>
+<li><p><strong>CPU 密集型任务：</strong> corePoolSize ≈ CPU 核数 (或 核数+1)。maximumPoolSize 可设稍大点（如 corePoolSize * 2），但避免过大导致过多上下文切换。workQueue 可设小点（如 ArrayBlockingQueue 容量 100）或使用 SynchronousQueue（配合较大的 maximumPoolSize），防止任务堆积。</p>
+</li>
+<li><p><strong>IO 密集型任务：</strong> corePoolSize 可以设大些（如 CPU 核数 _ 2 或更高），因为线程大部分时间在阻塞（IO 等待）。maximumPoolSize 可以更大（如 corePoolSize _ 2 或更高）。workQueue 容量也可稍大（如 LinkedBlockingQueue 设 1000+），缓冲突增请求。</p>
+</li>
+<li><p><strong>混合型任务：</strong> 拆分为 CPU 密集和 IO 密集队列，或根据监控动态调整。</p>
+</li>
+<li><p><strong>考虑因素：</strong></p>
+<ol>
+<li><p><strong>任务性质：</strong> CPU/IO/混合？执行时间长短？是否有依赖？</p>
+</li>
+<li><p><strong>系统资源：</strong> CPU 核数、内存大小、IO 带宽。</p>
+</li>
+<li><p><strong>性能目标：</strong> 吞吐量优先？响应时间优先？</p>
+</li>
+<li><p><strong>监控工具：</strong> 观察线程池运行指标（jstack, jvisualvm, metrics 等）：线程数、活动线程数、队列大小、任务完成数、拒绝任务数、平均等待/执行时间等。根据监控数据持续调整 corePoolSize, maximumPoolSize, workQueue 容量。</p>
+</li>
+</ol>
+</li>
+<li><p><strong>推荐：</strong> 使用有界队列（避免 OOM）配合合理的拒绝策略（如 CallerRunsPolicy 或自定义降级策略）。不要使用 Executors 的 newFixedThreadPool (无界队列) 或 newCachedThreadPool (无界线程数) 这些隐藏风险的方法，推荐手动 new ThreadPoolExecutor。</p>
+</li>
+</ul>
+<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><ul>
+<li><p>单例模式有哪些实现方式？请写出线程安全的双重检查锁 (Double-Checked Locking, DCL) 实现，并解释为什么需要 volatile 关键字。</p>
+<ul>
+<li><p>常见实现方式：</p>
+<ol>
+<li><p>饿汉式 (Eager Initialization)： 类加载时就初始化实例。线程安全但可能造成资源浪费（如果实例一直不用）。</p>
+</li>
+<li><p>懒汉式 (Lazy Initialization)： 第一次使用时才初始化。非线程安全。</p>
+</li>
+<li><p>同步方法懒汉式： 在 getInstance() 方法上加 synchronized。线程安全但效率低（每次获取都要同步）。</p>
+</li>
+<li><p>双重检查锁 (DCL)： 推荐方式。结合了懒加载和效率（只在第一次创建时同步）。需要 volatile。</p>
+</li>
+<li><p>静态内部类 (Holder)： 利用类加载机制保证线程安全（Holder 类只在 getInstance() 第一次调用时加载并初始化 INSTANCE）。简洁高效，推荐。</p>
+</li>
+<li><p>枚举 (Enum)： Joshua Bloch 在《Effective Java》中推荐的方式。写法最简单，且天生线程安全，还能防止反序列化和反射破坏单例。最佳实践。</p>
+</li>
+</ol>
+</li>
+<li><p>双重检查锁 (DCL) 实现及 volatile 的必要性：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="comment">// volatile 修饰符至关重要！！！</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Singleton instance;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;&#125; <span class="comment">// 私有构造器</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123; <span class="comment">// 第一次检查 (无锁)</span></span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123; <span class="comment">// 加锁</span></span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123; <span class="comment">// 第二次检查 (有锁)</span></span><br><span class="line">                    instance = <span class="keyword">new</span> <span class="title class_">Singleton</span>(); <span class="comment">// 创建实例</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>为什么需要 volatile？</p>
+<p>问题出在 instance = new Singleton(); 这一行。这并非一个原子操作，它大致分为 3 步：</p>
+<ol>
+<li><p>为对象分配内存空间。</p>
+</li>
+<li><p>初始化对象（调用构造方法，设置字段初始值）。</p>
+</li>
+<li><p>将 instance 引用指向分配的内存地址（此时 instance != null）。<br>由于步骤 2 和 3 可能发生指令重排序（JIT 优化）。如果线程 A 执行完步骤 1 和 3（此时 instance 已不为 null），但尚未执行步骤 2（对象未初始化）。此时线程 B 进入第一个 if (instance == null) 检查，发现 instance 不为 null（因为步骤 3 已执行），于是直接返回 instance。但此时 instance 指向的是一个尚未初始化完成的对象！线程 B 使用这个未初始化的对象就会出错。<br>volatile 的作用： 禁止 JIT 和处理器对 instance 变量的写操作与其之前的写操作进行重排序（通过内存屏障），确保步骤 3（赋值）一定发生在步骤 2（初始化）完成之后。这样其他线程看到的 instance 要么是 null，要么就是一个完全初始化好的对象。保证了 DCL 的正确性。</p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ali5669.github.io">Ali5669</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ali5669.github.io/2025/08/14/%E5%85%AB%E8%82%A1%E5%9F%BA%E7%A1%80-JAVA/">https://ali5669.github.io/2025/08/14/%E5%85%AB%E8%82%A1%E5%9F%BA%E7%A1%80-JAVA/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://ali5669.github.io" target="_blank">Ali5669</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/images/avatar.gif" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2025/08/11/%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C-%E6%8B%BC%E5%A4%9A%E5%A4%9A%E4%B8%80%E9%9D%A2/" title="面试经验-拼多多一面"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">面试经验-拼多多一面</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/avatar.gif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Ali5669</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">58</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ali5669"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">爱你</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%93%E4%B8%9A%E6%8A%80%E8%83%BD%E6%8F%8F%E8%BF%B0"><span class="toc-number">2.</span> <span class="toc-text">专业技能描述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AE%B9"><span class="toc-number">3.</span> <span class="toc-text">内容</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E5%90%88"><span class="toc-number">3.1.</span> <span class="toc-text">集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84"><span class="toc-number">3.2.</span> <span class="toc-text">反射</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IO"><span class="toc-number">3.3.</span> <span class="toc-text">IO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JUC"><span class="toc-number">3.4.</span> <span class="toc-text">JUC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM"><span class="toc-number">3.5.</span> <span class="toc-text">JVM</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="toc-number">3.5.1.</span> <span class="toc-text">垃圾回收</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.5.2.</span> <span class="toc-text">内存模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-number">3.6.</span> <span class="toc-text">线程池</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.7.</span> <span class="toc-text">设计模式</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/14/%E5%85%AB%E8%82%A1%E5%9F%BA%E7%A1%80-JAVA/" title="八股基础-JAVA">八股基础-JAVA</a><time datetime="2025-08-14T07:38:30.000Z" title="发表于 2025-08-14 15:38:30">2025-08-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/11/%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C-%E6%8B%BC%E5%A4%9A%E5%A4%9A%E4%B8%80%E9%9D%A2/" title="面试经验-拼多多一面">面试经验-拼多多一面</a><time datetime="2025-08-11T00:52:52.000Z" title="发表于 2025-08-11 08:52:52">2025-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/06/%E9%9D%A2%E8%AF%95%E6%A8%A1%E6%8B%9F-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="面试模拟-基础知识">面试模拟-基础知识</a><time datetime="2025-08-06T02:14:30.000Z" title="发表于 2025-08-06 10:14:30">2025-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/06/%E9%9D%A2%E8%AF%95%E6%A8%A1%E6%8B%9F-%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B%E4%B8%8EDDD%E5%AE%9E%E8%B7%B5/" title="面试模拟-架构演进与DDD实践">面试模拟-架构演进与DDD实践</a><time datetime="2025-08-06T02:09:40.000Z" title="发表于 2025-08-06 10:09:40">2025-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/30/%E9%9D%A2%E8%AF%95%E6%A8%A1%E6%8B%9F-RocketMQ/" title="面试模拟-RocketMQ">面试模拟-RocketMQ</a><time datetime="2025-07-30T02:35:16.000Z" title="发表于 2025-07-30 10:35:16">2025-07-30</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By Ali5669</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://illustrious-lily-7059de.netlify.app/.netlify/functions/twikoo',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://illustrious-lily-7059de.netlify.app/.netlify/functions/twikoo',
+      region: '',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(init,0)
+    else getScript('https://cdn.jsdelivr.net/npm/twikoo@1.6.31/dist/twikoo.all.min.js').then(init)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
